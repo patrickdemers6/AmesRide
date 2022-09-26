@@ -7,7 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@eva-design/eva": "^2.1.1",
@@ -37,10 +38,16 @@
     "@hookstate/devtools": "^4.0.0-rc21",
     "eslint": "^8.24.0",
     "eslint-config-universe": "^11.1.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
     "prettier": "^2.7.1"
   },
   "eslintConfig": {
     "extends": "universe/native"
   },
-  "private": true
+  "private": true,
+  "lint-staged": {
+    "*.js": "eslint --cache --fix",
+    "*.{js,css,md}": "prettier --write"
+  }
 }
