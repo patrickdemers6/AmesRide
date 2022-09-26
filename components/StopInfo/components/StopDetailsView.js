@@ -60,33 +60,41 @@ const StopDetailsView = () => {
             {upcomingArrivals === null ? null : upcomingArrivals.length === 0 ? (
               <Text>No upcoming arrivals.</Text>
             ) : (
-              upcomingArrivals.map((arrival) => (
-                <Pressable
-                  key={arrival.TripId}
-                  onPress={() => {
-                    const route = {
-                      equals: selectEqualsFunction,
-                      row: routes.indexOf(
-                        routes.filter((r) =>
-                          r.Patterns.map((p) => p.Name).includes(arrival.RouteName)
-                        )[0]
-                      ),
-                    };
-                    dispatcher?.updateCurrentRoute(route, false);
-                  }}>
-                  <Text>
-                    {arrival.RouteName} -{' '}
-                    {arrival.Minutes > 1
-                      ? arrival.Time + ' minutes'
-                      : arrival.Minutes === 1
-                      ? '1 minute'
-                      : 'Arriving'}{' '}
-                    ({arrival.ArriveTime})
-                  </Text>
-                </Pressable>
-              ))
+              upcomingArrivals.map((arrival) => {
+                const r = routes.filter((route) =>
+                  route.Patterns.map((p) => p.ID).includes(arrival.RouteID)
+                )[0];
+                return (
+                  <Pressable
+                    key={arrival.TripId}
+                    onPress={() => {
+                      const route = {
+                        equals: selectEqualsFunction,
+                        row: routes.indexOf(
+                          routes.filter((r) =>
+                            r.Patterns.map((p) => p.Name).includes(arrival.RouteName)
+                          )[0]
+                        ),
+                      };
+                      dispatcher?.updateCurrentRoute(route, false);
+                    }}>
+                    <View
+                      style={{ borderLeftColor: r.Color, borderLeftWidth: 10, marginVertical: 4 }}>
+                      <Text style={{ paddingLeft: 4 }}>
+                        {r.DisplayName} - {arrival.ArriveTime} (
+                        {arrival.Minutes > 1
+                          ? arrival.Time + ' minutes'
+                          : arrival.Minutes === 1
+                          ? '1 minute'
+                          : 'Arriving'}
+                        )
+                      </Text>
+                    </View>
+                  </Pressable>
+                );
+              })
             )}
-            <View style={{ height: 50 }} />
+            <View style={{ height: 70 }} />
           </ScrollView>
         </View>
       </View>
@@ -98,7 +106,7 @@ const selectEqualsFunction =
   'function(other){if(!other){return false;} return _this.row===other.row && _this.section===other.section;}';
 
 const fetchUpcomingArrivalsOnInterval = (stop, dispatcher) => {
-  const fetchUpcomingArrivals = () => dispatcher?.fetchUpcomingStops(stop);
+  const fetchUpcomingArrivals = () => dispatcher?.fetchUpcomingArrivals(stop);
   fetchUpcomingArrivals();
   return setInterval(fetchUpcomingArrivals, 15 * 1000);
 };

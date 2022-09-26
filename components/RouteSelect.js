@@ -16,7 +16,6 @@ import { currentRoute, favoriteRoutesOnlyState } from '../state/selectors';
 
 const setup = async () => {
   await localForage.defineDriver(fsDriver);
-
   return localForage.setDriver(driverKey);
 };
 

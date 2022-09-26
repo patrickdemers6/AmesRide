@@ -1,17 +1,15 @@
-import { useRecoilCallback } from 'recoil';
-
 import { vehicleLocationState } from '../atoms';
 import getVehicleLocations from '../utilities/request/getVehicleLocations';
 
-/*  eslint react-hooks/rules-of-hooks: "off" */
+export const updateVehicleLocations =
+  ({ set }) =>
+  async (routeID) => {
+    if (!routeID) return;
 
-export const updateVehicleLocations = useRecoilCallback(({ set }) => (routeID) => {
-  if (!routeID) return;
+    const vehicleLocations = await getVehicleLocations(routeID);
 
-  const vehicleLocations = getVehicleLocations(routeID);
-
-  set(vehicleLocationState, (current) => determineUpdatedValue(current, vehicleLocations));
-});
+    set(vehicleLocationState, (current) => determineUpdatedValue(current, vehicleLocations));
+  };
 
 const NO_VEHICLES_FOUND = [];
 const VEHICLES_LOADING = null;

@@ -1,5 +1,3 @@
-import { useRecoilCallback } from 'recoil';
-
 import {
   currentRouteRowState,
   currentStopState,
@@ -7,94 +5,80 @@ import {
   routesState,
   upcomingArrivalsState,
 } from '../atoms';
+import getRoutes from '../utilities/request/getRoutes';
+import getStops from '../utilities/request/getStops';
+import getWaypoints from '../utilities/request/getWaypoints';
 
 const DECIMAL_RADIX = 10;
 
-/*  eslint react-hooks/rules-of-hooks: "off" */
-
-export const fetchRoutes = useRecoilCallback(({ set, snapshot }) => () => {
-  fetch('https://www.mycyride.com/Region/0/Routes', {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  })
-    .then((result) => result.json())
-    .then(async (json) => {
-      json.sort(
-        (a, b) =>
-          Number.parseInt(a.DisplayName.split(' ')[0], DECIMAL_RADIX) -
-          Number.parseInt(b.DisplayName.split(' ')[0], DECIMAL_RADIX)
-      );
-
-      const favorites = await snapshot.getLoadable(favoriteRoutesState).contents;
-
-      if (favorites)
-        json = json.map((route) => ({ ...route, favorite: favorites.includes(route.ID) }));
-
-      if (json.length > 0) set(routesState, [...json]);
-    })
-    .catch(console.log);
-});
-
-export const updateCurrentRoute = useRecoilCallback(
+export const fetchRoutes =
   ({ set, snapshot }) =>
-    (route, clearCurrentStop = true) => {
-      set(currentRouteRowState, { ...route });
+  async () => {
+    let routes = await getRoutes();
 
-      if (clearCurrentStop) {
-        set(upcomingArrivalsState, null);
-        set(currentStopState, null);
-      }
+    if (routes.length === 0) return;
 
-      const routes = snapshot.getLoadable(routesState).contents;
+    routes.sort(sortRoutes);
 
-      if (!routes[route.row].waypoints) {
-        fetch(`https://www.mycyride.com/Route/${routes[route.row].ID}/Waypoints`, {
-          method: 'GET',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-        })
-          .then((result) => result.json())
-          .then((json) => {
-            let wp = json[0];
-            if (wp.length > 0) {
-              wp = wp.map((w) => ({ latitude: w.Latitude, longitude: w.Longitude }));
-              set(routesState, (rs) => {
-                const updated = [...rs];
-                updated[route.row] = { ...updated[route.row], waypoints: wp };
-                return updated;
-              });
-            }
-          })
-          .catch(console.log);
-      }
+    routes = await setFavoritesOnRoutes(routes, snapshot);
 
-      if (!routes[route.row].stops) {
-        fetch(
-          `https://www.mycyride.com/Route/${routes[route.row].Patterns[0].ID}/Direction/${
-            routes[route.row].ID
-          }/Stops`,
-          {
-            method: 'GET',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-          }
-        )
-          .then((result) => result.json())
-          .then((json) => {
-            set(routesState, (rs) => {
-              const updated = [...rs];
-              updated[route.row] = { ...updated[route.row], stops: json };
-              return updated;
-            });
-          })
-          .catch(console.log);
-      }
+    set(routesState, [...routes]);
+  };
+
+export const updateCurrentRoute =
+  ({ set, snapshot }) =>
+  async (route, clearCurrentStop = true) => {
+    set(currentRouteRowState, { ...route });
+
+    if (clearCurrentStop) {
+      set(upcomingArrivalsState, null);
+      set(currentStopState, null);
     }
-);
+
+    const routes = snapshot.getLoadable(routesState).contents;
+
+    if (!routes[route.row].waypoints) await updateWaypoints(routes, route, set);
+
+    if (!routes[route.row].stops) await updateStops(routes, route, set);
+  };
+
+const setFavoritesOnRoutes = async (routes, snapshot) => {
+  const favorites = await snapshot.getLoadable(favoriteRoutesState).contents;
+  let r = routes;
+  if (favorites) r = r.map((route) => ({ ...route, favorite: favorites.includes(route.ID) }));
+  return r;
+};
+
+const sortRoutes = (a, b) => {
+  const difference =
+    Number.parseInt(a.ShortName, DECIMAL_RADIX) - Number.parseInt(b.ShortName, DECIMAL_RADIX);
+
+  if (difference !== 0) return difference;
+
+  return a.DisplayName.includes('West') || a.DisplayName.includes('South');
+};
+
+const updateWaypoints = async (routes, route, set) => {
+  let waypoints = await getWaypoints(routes[route.row].ID);
+  waypoints = waypoints[0];
+
+  if (waypoints.length > 0) {
+    waypoints = waypoints.map((w) => ({ latitude: w.Latitude, longitude: w.Longitude }));
+
+    set(routesState, (rs) => {
+      const updated = [...rs];
+      updated[route.row] = { ...updated[route.row], waypoints };
+      return updated;
+    });
+  }
+};
+
+const updateStops = async (routes, route, set) => {
+  const stops = await getStops(routes[route.row].Patterns[0].ID, routes[route.row].ID);
+
+  set(routesState, (rs) => {
+    const updated = [...rs];
+    updated[route.row] = { ...updated[route.row], stops };
+    return updated;
+  });
+};

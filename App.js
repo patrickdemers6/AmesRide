@@ -13,7 +13,7 @@ const App = () => {
 
   return (
     <RecoilRoot>
-      {/*<Main />*/}
+      <Main />
     </RecoilRoot>
   );
 };
