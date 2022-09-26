@@ -43,7 +43,7 @@ const Map = () => {
   }, [location]);
 
   const setStop = (stop) => {
-    dispatcher?.setStop(stop);
+    dispatcher?.setCurrentStop(stop);
   };
 
   return (

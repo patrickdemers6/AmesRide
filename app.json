@@ -13,7 +13,7 @@
     },
     "updates": {
       "fallbackToCacheTimeout": 0,
-      "url": "https://u.expo.dev/82104b6e-3cc7-42e7-a1d0-3cd4e6e8da00"
+      "url": "https://u.expo.dev/66ed03a0-a25d-4e73-ba27-973d8ff7a2ae"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -36,13 +36,13 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "extra": {
-      "eas": {
-        "projectId": "82104b6e-3cc7-42e7-a1d0-3cd4e6e8da00"
-      }
-    },
     "runtimeVersion": {
       "policy": "sdkVersion"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "66ed03a0-a25d-4e73-ba27-973d8ff7a2ae"
+      }
     }
   }
 }

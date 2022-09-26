@@ -80,7 +80,8 @@ const StopDetailsView = () => {
                       ? arrival.Time + ' minutes'
                       : arrival.Minutes === 1
                       ? '1 minute'
-                      : 'Arriving'}
+                      : 'Arriving'}{' '}
+                    ({arrival.ArriveTime})
                   </Text>
                 </Pressable>
               ))
