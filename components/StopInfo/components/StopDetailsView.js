@@ -1,0 +1,105 @@
+import { Text } from '@ui-kitten/components';
+import React from 'react';
+import { ScrollView, View } from 'react-native';
+import GestureRecognizer from 'react-native-swipe-gestures';
+import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
+import { useRecoilValue } from 'recoil';
+
+import { currentStopState, dispatcherState, routesState } from '../../../state/atoms';
+import { upcomingArrivalsSorted } from '../../../state/selectors';
+
+const StopDetailsView = () => {
+  const stop = useRecoilValue(currentStopState);
+  const upcomingArrivals = useRecoilValue(upcomingArrivalsSorted);
+  const routes = useRecoilValue(routesState);
+  const dispatcher = useRecoilValue(dispatcherState);
+
+  // used so text doesn't disappear when sliding out
+  const [cached, setCached] = React.useState({ stopName: '', arrivals: [] });
+
+  const storeStopNameInCache = () => {
+    setCached((c) => ({ ...c, stopName: stop.Name }));
+  };
+
+  const handleUpdatedStop = () => {
+    if (!stop) return;
+
+    storeStopNameInCache();
+
+    const interval = fetchUpcomingArrivalsOnInterval(stop, dispatcher);
+    return () => clearInterval(interval);
+  };
+
+  const storeArrivalsInCache = () => {
+    if (!upcomingArrivals) return;
+
+    setCached((c) => ({ ...c, arrivals: upcomingArrivals }));
+  };
+
+  React.useEffect(handleUpdatedStop, [stop]);
+  React.useEffect(storeArrivalsInCache, [upcomingArrivals]);
+
+  return (
+    <GestureRecognizer onSwipeDown={dispatcher?.clearCurrentStop} style={{ width: '100%' }}>
+      <View style={{ width: '100%', height: '100%' }}>
+        <View
+          style={{
+            backgroundColor: '#F1BE48',
+            width: '100%',
+            padding: 12,
+            borderTopLeftRadius: 8,
+            borderTopRightRadius: 8,
+          }}>
+          <Text>{stop?.Name || cached.stopName}</Text>
+        </View>
+        <View style={{ flex: 1, height: '100%' }}>
+          <ScrollView
+            style={{ padding: 8, height: '100%', width: '100%' }}
+            onScroll={(e) => e.stopPropagation()}>
+            <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Upcoming Arrivals</Text>
+            {upcomingArrivals === null ? null : upcomingArrivals.length === 0 ? (
+              <Text>No upcoming arrivals.</Text>
+            ) : (
+              upcomingArrivals.map((arrival) => (
+                <Pressable
+                  key={arrival.TripId}
+                  onPress={() => {
+                    const route = {
+                      equals: selectEqualsFunction,
+                      row: routes.indexOf(
+                        routes.filter((r) =>
+                          r.Patterns.map((p) => p.Name).includes(arrival.RouteName)
+                        )[0]
+                      ),
+                    };
+                    dispatcher?.updateCurrentRoute(route, false);
+                  }}>
+                  <Text>
+                    {arrival.RouteName} -{' '}
+                    {arrival.Minutes > 1
+                      ? arrival.Time + ' minutes'
+                      : arrival.Minutes === 1
+                      ? '1 minute'
+                      : 'Arriving'}
+                  </Text>
+                </Pressable>
+              ))
+            )}
+            <View style={{ height: 50 }} />
+          </ScrollView>
+        </View>
+      </View>
+    </GestureRecognizer>
+  );
+};
+
+const selectEqualsFunction =
+  'function(other){if(!other){return false;} return _this.row===other.row && _this.section===other.section;}';
+
+const fetchUpcomingArrivalsOnInterval = (stop, dispatcher) => {
+  const fetchUpcomingArrivals = () => dispatcher?.fetchUpcomingStops(stop);
+  fetchUpcomingArrivals();
+  return setInterval(fetchUpcomingArrivals, 15 * 1000);
+};
+
+export default StopDetailsView;
