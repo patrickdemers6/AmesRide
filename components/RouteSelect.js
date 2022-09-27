@@ -3,6 +3,7 @@ import localForage from 'localforage';
 import fsDriver, { driverKey } from 'localforage-expo-filesystem-driver';
 import React from 'react';
 import { View } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useRecoilValue } from 'recoil';
 
@@ -67,7 +68,7 @@ const RouteSelect = () => {
           <SelectItem
             selected={routes && routes[index]?.ID === r.ID}
             key={i}
-            accessoryRight={<Ionicons name="star" size={17} onPress={() => favoritesClick(r.ID)} />}
+            accessoryRight={<Star filled onPress={() => favoritesClick(r.ID)} />}
             title={r.DisplayName}
           />
         ))}
@@ -80,16 +81,35 @@ const RouteSelect = () => {
             key={i + favoriteIDs.length}
             selected={i === index}
             accessoryRight={
-              <Ionicons
-                name={favoriteIDs.includes(r.ID) ? 'star' : 'star-outline'}
-                size={17}
-                onPress={() => favoritesClick(r.ID)}
-              />
+              <Star filled={favoriteIDs.includes(r.ID)} onPress={() => favoritesClick(r.ID)} />
             }
             title={r.DisplayName}
           />
         ))}
     </Select>
+  );
+};
+
+const Star = (props) => {
+  return (
+    <Ionicons.Button
+      {...props}
+      backgroundColor="transparent"
+      underlayColor="transparent"
+      style={{ alignItems: 'center', justifyContent: 'center', height: 20 }}
+      iconStyle={{
+        color: 'black',
+        width: 17,
+        height: 17,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+      }}
+      name={props.filled ? 'star' : 'star-outline'}
+      size={17}
+      onPress={props.onPress}
+    />
   );
 };
 
