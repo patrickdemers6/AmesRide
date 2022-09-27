@@ -20,6 +20,7 @@ module.exports = {
       supportsTablet: true,
     },
     android: {
+      versionCode: 2,
       config: {
         googleMaps: {
           apiKey: process.env.GOOGLE_MAPS_API_KEY,
