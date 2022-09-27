@@ -13,16 +13,25 @@ export const removeFavorite =
   };
 
 export const addFavorite =
-  ({ set }) =>
-  (id) => {
+  ({ set, snapshot }) =>
+  async (id) => {
+    const routes = await snapshot.getLoadable(routesState).contents;
+
     set(favoriteRoutesState, (f) => {
-      return [...f, id];
+      const newFavorites = [...f, id];
+      return sortFavorites(newFavorites, routes);
     });
 
     set(routesState, (routes) => {
       return [...routes.map((r) => (r.ID === id ? { ...r, favorite: true } : r))];
     });
   };
+
+const sortFavorites = (favorites, routes) => {
+  const idToIndex = {};
+  routes.forEach((route, i) => (idToIndex[route.ID] = i));
+  return favorites.sort((a, b) => idToIndex[a] - idToIndex[b]);
+};
 
 export const fetchFavorites =
   ({ set }) =>
