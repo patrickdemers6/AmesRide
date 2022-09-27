@@ -3,7 +3,6 @@ import localForage from 'localforage';
 import fsDriver, { driverKey } from 'localforage-expo-filesystem-driver';
 import React from 'react';
 import { View } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useRecoilValue } from 'recoil';
 
@@ -33,6 +32,7 @@ const RouteSelect = () => {
       await setup();
       dispatcher?.fetchFavorites();
       dispatcher?.fetchRoutes();
+      dispatcher?.fetchUserSettings();
     })();
   }, [dispatcher]);
 
