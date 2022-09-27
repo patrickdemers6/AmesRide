@@ -55,7 +55,12 @@ const sortRoutes = (a, b) => {
 
   if (difference !== 0) return difference;
 
-  return a.DisplayName.includes('West') || a.DisplayName.includes('South');
+  const directions = ['North', 'East', 'South', 'West'];
+  const aDir = directions.some((dir) => a.DisplayName.endsWith(dir));
+  const bDir = directions.some((dir) => b.DisplayName.endsWith(dir));
+  if (aDir && bDir) return a.DisplayName.includes('West') || a.DisplayName.includes('South');
+
+  return bDir;
 };
 
 const updateWaypoints = async (routes, route, set) => {
