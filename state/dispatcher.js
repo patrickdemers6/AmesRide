@@ -4,6 +4,7 @@ import { addFavorite, removeFavorite, fetchFavorites } from './dispatchers/favor
 import { fetchRoutes, updateCurrentRoute } from './dispatchers/routes';
 import { clearCurrentStop, setCurrentStop, fetchUpcomingArrivals } from './dispatchers/stops';
 import { setUserLocation } from './dispatchers/userLocation';
+import { fetchUserSettings, setUserSetting, toggleUserSetting } from './dispatchers/userSettings';
 import { updateVehicleLocations } from './dispatchers/vehicles';
 
 export const createDispatcher = () => {
@@ -18,6 +19,9 @@ export const createDispatcher = () => {
     setCurrentStop,
     fetchUpcomingArrivals,
     setUserLocation,
+    fetchUserSettings,
+    setUserSetting,
+    toggleUserSetting,
   };
 
   Object.keys(methods).forEach((key) => {

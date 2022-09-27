@@ -2,10 +2,17 @@ import { Text } from '@ui-kitten/components';
 import React from 'react';
 import { ScrollView, View } from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import { useRecoilValue } from 'recoil';
 
-import { currentStopState, dispatcherState, routesState } from '../../../state/atoms';
+import {
+  currentStopState,
+  dispatcherState,
+  favoriteRoutesState,
+  routesState,
+  userSettingsState,
+} from '../../../state/atoms';
 import { upcomingArrivalsSorted } from '../../../state/selectors';
 
 const StopDetailsView = () => {
@@ -13,12 +20,18 @@ const StopDetailsView = () => {
   const upcomingArrivals = useRecoilValue(upcomingArrivalsSorted);
   const routes = useRecoilValue(routesState);
   const dispatcher = useRecoilValue(dispatcherState);
+  const settings = useRecoilValue(userSettingsState);
+  const favoriteRouteIDs = useRecoilValue(favoriteRoutesState);
 
   // used so text doesn't disappear when sliding out
   const [cached, setCached] = React.useState({ stopName: '', arrivals: [] });
 
   const storeStopNameInCache = () => {
     setCached((c) => ({ ...c, stopName: stop.Name }));
+  };
+
+  const toggleFilterSetting = () => {
+    dispatcher?.toggleUserSetting('showFavoriteArrivalsOnly');
   };
 
   const handleUpdatedStop = () => {
@@ -50,7 +63,21 @@ const StopDetailsView = () => {
             borderTopLeftRadius: 8,
             borderTopRightRadius: 8,
           }}>
-          <Text>{stop?.Name || cached.stopName}</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              paddingLeft: 12,
+              paddingRight: 12,
+            }}>
+            <Text style={{ width: '100%', float: 'left' }}>{stop?.Name || cached.stopName}</Text>
+            <Icon
+              onPress={toggleFilterSetting}
+              size={18}
+              name={settings.showFavoriteArrivalsOnly ? 'filter' : 'filter-outline'}
+            />
+          </View>
         </View>
         <View style={{ flex: 1, height: '100%' }}>
           <ScrollView
@@ -64,6 +91,10 @@ const StopDetailsView = () => {
                 const r = routes.filter((route) =>
                   route.Patterns.map((p) => p.ID).includes(arrival.RouteID)
                 )[0];
+
+                if (settings?.showFavoriteArrivalsOnly && !favoriteRouteIDs.includes(r.ID))
+                  return null;
+
                 return (
                   <Pressable
                     key={arrival.TripId}
@@ -86,7 +117,7 @@ const StopDetailsView = () => {
                           ? arrival.Time + ' minutes'
                           : arrival.Minutes === 1
                           ? '1 minute'
-                          : 'Arriving'}
+                          : 'arriving'}
                         )
                       </Text>
                     </View>
