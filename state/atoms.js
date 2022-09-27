@@ -50,3 +50,11 @@ export const favoriteRoutesState = atom({
   default: [],
   effects: [localForageEffect('favorites')],
 });
+
+export const userSettingsState = atom({
+  key: 'userSettingsState',
+  default: {
+    showFavoriteArrivalsOnly: false,
+  },
+  effects: [localForageEffect('userSettingsState')],
+});
