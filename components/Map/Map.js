@@ -63,7 +63,11 @@ const Map = () => {
         moveOnMarkerPress={false}
         ref={mapRef}
         showsCompass={false}
-        rotateEnabled={false}>
+        rotateEnabled={false}
+        toolbarEnabled={false}
+        showsIndoorLevelPicker={false}
+        showsIndoors={false}
+        showsTraffic={false}>
         <RouteLine route={route} />
         <Stops stops={route.stops} onPress={setStop} />
         <Vehicles />
