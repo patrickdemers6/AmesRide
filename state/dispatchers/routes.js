@@ -4,6 +4,7 @@ import {
   favoriteRoutesState,
   routesState,
   upcomingArrivalsState,
+  vehicleLocationState,
 } from '../atoms';
 import getRoutes from '../utilities/request/getRoutes';
 import getStops from '../utilities/request/getStops';
@@ -29,6 +30,7 @@ export const updateCurrentRoute =
   ({ set, snapshot }) =>
   async (route, clearCurrentStop = true) => {
     set(currentRouteRowState, { ...route });
+    set(vehicleLocationState, null);
 
     if (clearCurrentStop) {
       set(upcomingArrivalsState, null);
