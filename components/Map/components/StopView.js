@@ -28,7 +28,7 @@ class StopView extends PureComponent {
   render() {
     return (
       <Marker
-        tracksViewChanges={this.tracksViewChanges}
+        tracksViewChanges={this.state.tracksViewChanges}
         onPress={this.onPress}
         coordinate={{ latitude: this.props.stop.Latitude, longitude: this.props.stop.Longitude }}
         anchor={{ x: 0.5, y: 0.5 }}>
