@@ -15,15 +15,16 @@ const DECIMAL_RADIX = 10;
 export const fetchRoutes =
   ({ set, snapshot }) =>
   async () => {
-    let routes = await getRoutes();
+    const routes = await getRoutes();
 
     if (routes.length === 0) return;
 
-    routes.sort(sortRoutes);
+    if (!routes.sorted) {
+      routes.routes.sort(sortRoutes);
+      routes.routes = await setFavoritesOnRoutes(routes.routes, snapshot);
+    }
 
-    routes = await setFavoritesOnRoutes(routes, snapshot);
-
-    set(routesState, [...routes]);
+    set(routesState, [...routes.routes]);
   };
 
 export const updateCurrentRoute =
