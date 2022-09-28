@@ -37,6 +37,7 @@ class StopView extends PureComponent {
             style={{ width: '100%', height: '100%' }}
             source={stopImage}
             onLoad={this.stopTrackingViewChanges}
+            fadeDuration={0}
           />
         </View>
       </Marker>
