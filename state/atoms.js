@@ -1,9 +1,11 @@
-import * as localForage from 'localforage';
 import { atom } from 'recoil';
+
+import localForageEffect from './utilities/localforage/updateEffect';
 
 export const routesState = atom({
   key: 'routesState',
   default: [],
+  effects: [localForageEffect('routes')],
 });
 
 export const vehicleLocationState = atom({
@@ -35,15 +37,6 @@ export const userLocationState = atom({
   key: 'userLocationState',
   default: null,
 });
-
-const localForageEffect =
-  (key) =>
-  ({ onSet }) => {
-    // Subscribe to state changes and persist them to localForage
-    onSet((newValue, _, isReset) =>
-      isReset ? localForage.removeItem(key) : localForage.setItem(key, JSON.stringify(newValue))
-    );
-  };
 
 export const favoriteRoutesState = atom({
   key: 'favoriteRoutesState',

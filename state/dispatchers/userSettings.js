@@ -1,13 +1,13 @@
 import localForage from 'localforage';
 
 import { userSettingsState } from '../atoms';
+import getFromLocalStorage from '../utilities/localforage/getFromLocalStorage';
 
 export const fetchUserSettings =
   ({ set }) =>
-  () => {
-    localForage.getItem('userSettingsState').then((savedValue) => {
-      set(userSettingsState, savedValue != null ? JSON.parse(savedValue) : {});
-    });
+  async () => {
+    const settings = await getFromLocalStorage('userSettingsState');
+    set(userSettingsState, (s) => (settings ? { ...s, ...settings } : s));
   };
 
 export const setUserSetting =

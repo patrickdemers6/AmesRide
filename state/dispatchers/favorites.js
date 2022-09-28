@@ -1,6 +1,7 @@
 import localForage from 'localforage';
 
 import { favoriteRoutesState, routesState } from '../atoms';
+import getFromLocalStorage from '../utilities/localforage/getFromLocalStorage';
 
 export const removeFavorite =
   ({ set }) =>
@@ -35,8 +36,7 @@ const sortFavorites = (favorites, routes) => {
 
 export const fetchFavorites =
   ({ set }) =>
-  () => {
-    localForage.getItem('favorites').then((savedValue) => {
-      set(favoriteRoutesState, savedValue != null ? JSON.parse(savedValue) : []);
-    });
+  async () => {
+    const favorites = await getFromLocalStorage('favorites');
+    set(favoriteRoutesState, favorites || []);
   };
