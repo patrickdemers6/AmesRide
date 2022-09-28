@@ -28,7 +28,9 @@ const Map = () => {
     (async () => {
       const location = await Location.getCurrentPositionAsync();
       dispatcher?.setUserLocation(location);
-    })();
+    })().catch(() => {
+      console.log('No location permissions granted.');
+    });
   }, []);
 
   React.useEffect(() => {
