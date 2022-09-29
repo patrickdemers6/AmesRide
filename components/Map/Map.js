@@ -1,6 +1,6 @@
 import * as Location from 'expo-location';
 import React, { useRef } from 'react';
-import { View, Dimensions } from 'react-native';
+import { View, Dimensions, AppState } from 'react-native';
 import MapView from 'react-native-maps';
 import { useRecoilValue } from 'recoil';
 
@@ -12,6 +12,8 @@ import Vehicles from './components/Vehicles';
 
 const { width, height } = Dimensions.get('window');
 
+const FETCH_BUS_SECONDS_INTERVAL = 5000;
+
 const Map = () => {
   const route = useRecoilValue(currentRoute);
   const location = useRecoilValue(userLocationState);
@@ -19,9 +21,22 @@ const Map = () => {
 
   const mapRef = useRef(null);
 
+  const appState = useRef(AppState.currentState);
+
   React.useEffect(() => {
     const interval = fetchVehiclesOnInterval(route, dispatcher);
-    return () => clearInterval(interval);
+
+    // fetch bus when app comes back into foreground
+    const subscription = AppState.addEventListener('change', (nextAppState) => {
+      if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
+        fetchVehicle(route);
+      }
+    });
+
+    return () => {
+      clearInterval(interval);
+      subscription.remove();
+    };
   }, [route]);
 
   React.useEffect(() => {
@@ -76,11 +91,12 @@ const Map = () => {
   );
 };
 
-const fetchVehiclesOnInterval = (route, dispatcher) => {
-  const fetchVehicle = () => dispatcher?.updateVehicleLocations(route.ID);
-  fetchVehicle();
+const fetchVehicle = (route, dispatcher) => dispatcher?.updateVehicleLocations(route.ID);
 
-  return setInterval(fetchVehicle, 5000);
+const fetchVehiclesOnInterval = (route, dispatcher) => {
+  fetchVehicle(route, dispatcher);
+
+  return setInterval(() => fetchVehicle(route, dispatcher), FETCH_BUS_SECONDS_INTERVAL);
 };
 
 export default Map;
