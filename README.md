@@ -6,6 +6,11 @@ In Ames, Iowa, there are two existing applications which attempt to cater to thi
 With ratings on the Play Store of 1.9 stars and 2.3 stars, the existing solutions are unreliable and unmaintained.
 
 **Ames Ride** strives to be a reliable, modern application that informs riders of current bus locations and arrival times.
+# Download
+
+The app is available on the [Google Play Store](https://play.google.com/store/apps/details?id=com.demerstech.amesride) or as an APK in the [releases](https://github.com/patrickdemers6/AmesRide/releases) section.
+
+<a href='https://play.google.com/store/apps/details?id=com.demerstech.amesride&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="200"/></a>
 
 # Features
 Ames Ride has nearly all features present in alternative applications.
