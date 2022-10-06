@@ -1,5 +1,6 @@
 import * as Location from 'expo-location';
 import React from 'react';
+import { Provider as PaperProvider } from 'react-native-paper';
 import { RecoilRoot } from 'recoil';
 
 import Main from './Main';
@@ -13,7 +14,9 @@ const App = () => {
 
   return (
     <RecoilRoot>
-      <Main />
+      <PaperProvider>
+        <Main />
+      </PaperProvider>
     </RecoilRoot>
   );
 };
