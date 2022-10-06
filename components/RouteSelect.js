@@ -30,8 +30,9 @@ const RouteSelect = () => {
   React.useEffect(() => {
     (async () => {
       await setup();
-      dispatcher?.fetchFavorites();
       dispatcher?.fetchRoutes();
+      dispatcher?.fetchFavorites();
+      dispatcher?.fetchFavoriteStops();
       dispatcher?.fetchUserSettings();
     })();
   }, [dispatcher]);

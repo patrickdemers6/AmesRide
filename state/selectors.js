@@ -2,7 +2,9 @@ import { selector } from 'recoil';
 
 import {
   currentRouteRowState,
+  currentStopState,
   favoriteRoutesState,
+  favoriteStopsState,
   routesState,
   upcomingArrivalsState,
 } from './atoms';
@@ -44,5 +46,16 @@ export const upcomingArrivalsSorted = selector({
       }
     }
     return result.sort((a, b) => a.Minutes > b.Minutes);
+  },
+});
+
+export const isCurrentStopFavorite = selector({
+  key: 'isCurrentStopFavorite',
+  get: ({ get }) => {
+    const currentStop = get(currentStopState);
+    const favoriteStops = get(favoriteStopsState);
+    if (!currentStop) return false;
+
+    return favoriteStops.has(currentStop.ID);
   },
 });

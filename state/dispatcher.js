@@ -1,5 +1,11 @@
 import { useRecoilCallback } from 'recoil';
 
+import {
+  addFavoriteStop,
+  removeFavoriteStop,
+  fetchFavoriteStops,
+  toggleFavoriteStop,
+} from './dispatchers/favoriteStops';
 import { addFavorite, removeFavorite, fetchFavorites } from './dispatchers/favorites';
 import { fetchRoutes, updateCurrentRoute } from './dispatchers/routes';
 import { clearCurrentStop, setCurrentStop, fetchUpcomingArrivals } from './dispatchers/stops';
@@ -22,6 +28,10 @@ export const createDispatcher = () => {
     fetchUserSettings,
     setUserSetting,
     toggleUserSetting,
+    removeFavoriteStop,
+    addFavoriteStop,
+    fetchFavoriteStops,
+    toggleFavoriteStop,
   };
 
   Object.keys(methods).forEach((key) => {

@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 
-import localForageEffect from './utilities/localforage/updateEffect';
+import { localForageEffectSet, localForageEffect } from './utilities/localforage/updateEffects';
 
 export const routesState = atom({
   key: 'routesState',
@@ -42,6 +42,12 @@ export const favoriteRoutesState = atom({
   key: 'favoriteRoutesState',
   default: [],
   effects: [localForageEffect('favorites')],
+});
+
+export const favoriteStopsState = atom({
+  key: 'favoriteStopsState',
+  default: new Set(),
+  effects: [localForageEffectSet('favorite-stops')],
 });
 
 export const userSettingsState = atom({
