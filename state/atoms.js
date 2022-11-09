@@ -1,10 +1,10 @@
 import { atom } from 'recoil';
 
-import localForageEffect from './utilities/localforage/updateEffect';
+import { localForageEffectSet, localForageEffect } from './utilities/localforage/updateEffects';
 
 export const routesState = atom({
   key: 'routesState',
-  default: [],
+  default: {},
   effects: [localForageEffect('routes')],
 });
 
@@ -15,7 +15,7 @@ export const vehicleLocationState = atom({
 
 export const currentRouteRowState = atom({
   key: 'currentRouteRowState',
-  default: null,
+  default: -1,
 });
 
 export const dispatcherState = atom({
@@ -40,8 +40,26 @@ export const userLocationState = atom({
 
 export const favoriteRoutesState = atom({
   key: 'favoriteRoutesState',
-  default: [],
-  effects: [localForageEffect('favorites')],
+  default: new Set(),
+  effects: [localForageEffectSet('favorite-routes')],
+});
+
+export const favoriteStopsState = atom({
+  key: 'favoriteStopsState',
+  default: new Set(),
+  effects: [localForageEffectSet('favorite-stops')],
+});
+
+export const stopsState = atom({
+  key: 'stopsState',
+  default: {},
+  effects: [localForageEffect('stops-state')],
+});
+
+export const routePatternsState = atom({
+  key: 'routePatternsState',
+  default: {},
+  effects: [localForageEffect('route-patterns')],
 });
 
 export const userSettingsState = atom({

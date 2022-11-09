@@ -1,4 +1,5 @@
-import { currentStopState, upcomingArrivalsState } from '../atoms';
+import { currentStopState, stopsState, upcomingArrivalsState } from '../atoms';
+import getFromLocalStorage from '../utilities/localforage/getFromLocalStorage';
 import getArrivals from '../utilities/request/getArrivals';
 
 export const clearCurrentStop =
@@ -16,6 +17,14 @@ export const setCurrentStop =
 export const fetchUpcomingArrivals =
   ({ set }) =>
   async (stop) => {
+    if (stop.ID === -1) return;
     const arrivals = await getArrivals(stop.ID);
     set(upcomingArrivalsState, arrivals);
+  };
+
+export const fetchStops =
+  ({ set }) =>
+  async () => {
+    const stops = await getFromLocalStorage('stops-state');
+    set(stopsState, stops || {});
   };

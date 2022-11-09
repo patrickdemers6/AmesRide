@@ -1,5 +1,3 @@
-import localForage from 'localforage';
-
 import { userSettingsState } from '../atoms';
 import getFromLocalStorage from '../utilities/localforage/getFromLocalStorage';
 

@@ -3,6 +3,7 @@ import { Image, View } from 'react-native';
 import { Marker } from 'react-native-maps';
 
 import stopImage from '../../../assets/circle.png';
+import favoriteStopImage from '../../../assets/star.png';
 
 class StopView extends PureComponent {
   constructor(props) {
@@ -13,6 +14,13 @@ class StopView extends PureComponent {
 
     this.stopTrackingViewChanges = this.stopTrackingViewChanges.bind(this);
     this.onPress = this.onPress.bind(this);
+  }
+
+  componentDidUpdate() {
+    if (this.props.favorite && !this.tracksViewChanges)
+      this.setState(() => ({
+        tracksViewChanges: true,
+      }));
   }
 
   stopTrackingViewChanges() {
@@ -35,7 +43,7 @@ class StopView extends PureComponent {
         <View style={{ width: 20, height: 20, zIndex: 5 }}>
           <Image
             style={{ width: '100%', height: '100%' }}
-            source={stopImage}
+            source={this.props.favorite ? favoriteStopImage : stopImage}
             onLoad={this.stopTrackingViewChanges}
             fadeDuration={0}
           />

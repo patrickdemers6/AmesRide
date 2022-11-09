@@ -18,7 +18,7 @@ const BottomSheet = ({ show, children }) => {
 
   const translateY = animatedValue.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, 250],
+    outputRange: [0, 300],
     extrapolate: 'clamp',
   });
 
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     width: '100%',
-    height: 250,
+    height: 300,
     bottom: 0,
     left: 0,
     position: 'absolute',
