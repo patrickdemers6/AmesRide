@@ -32,6 +32,9 @@ module.exports = {
       },
       package: 'com.demerstech.amesride',
     },
+    androidNavigationBar: {
+      visible: 'sticky',
+    },
     web: {
       favicon: './assets/favicon.png',
     },

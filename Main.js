@@ -1,7 +1,7 @@
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider } from '@ui-kitten/components';
 import React from 'react';
-import { Dimensions, StatusBar, StyleSheet, View } from 'react-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useSetRecoilState } from 'recoil';
 
@@ -13,7 +13,6 @@ import { createDispatcher } from './state/dispatcher';
 
 const styles = StyleSheet.create({
   page: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
@@ -56,18 +55,16 @@ export default function Main() {
 
   return (
     <SafeAreaProvider>
-      <View style={{ height: Dimensions.get('window').height }}>
-        <StatusBar backgroundColor="white" barStyle="dark-content" />
-        <ApplicationProvider {...eva} theme={eva.light}>
-          <View style={styles.page}>
-            <RouteSelect />
-            <View style={styles.container}>
-              <Map />
-              <StopInfo />
-            </View>
+      <StatusBar backgroundColor="white" barStyle="dark-content" />
+      <ApplicationProvider {...eva} theme={eva.light}>
+        <View style={styles.page}>
+          <RouteSelect />
+          <View style={styles.container}>
+            <Map />
+            <StopInfo />
           </View>
-        </ApplicationProvider>
-      </View>
+        </View>
+      </ApplicationProvider>
     </SafeAreaProvider>
   );
 }

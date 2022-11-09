@@ -14,9 +14,7 @@ export const localForageEffectSet =
     // Subscribe to state changes and persist them to localForage
 
     onSet((newValue, _, isReset) => {
-      console.log('saving', JSON.stringify(Array.from(newValue)));
-      isReset
-        ? localForage.removeItem(key)
-        : localForage.setItem(key, JSON.stringify(Array.from(newValue)));
+      if (isReset) localForage.removeItem(key);
+      else localForage.setItem(key, JSON.stringify(Array.from(newValue)));
     });
   };

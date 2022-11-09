@@ -22,10 +22,8 @@ export const getSetFromLocalStorage = async (key) => {
     return new Set();
   }
 
-  console.log({ savedValue });
   if (savedValue) {
     const jsonArray = JSON.parse(savedValue);
-    console.log({ jsonArray });
     return new Set(jsonArray);
   }
 

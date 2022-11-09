@@ -8,7 +8,12 @@ import {
 } from './dispatchers/favoriteStops';
 import { addFavorite, removeFavorite, fetchFavorites } from './dispatchers/favorites';
 import { fetchRoutes, updateCurrentRoute } from './dispatchers/routes';
-import { clearCurrentStop, setCurrentStop, fetchUpcomingArrivals } from './dispatchers/stops';
+import {
+  clearCurrentStop,
+  setCurrentStop,
+  fetchUpcomingArrivals,
+  fetchStops,
+} from './dispatchers/stops';
 import { setUserLocation } from './dispatchers/userLocation';
 import { fetchUserSettings, setUserSetting, toggleUserSetting } from './dispatchers/userSettings';
 import { updateVehicleLocations } from './dispatchers/vehicles';
@@ -32,6 +37,7 @@ export const createDispatcher = () => {
     addFavoriteStop,
     fetchFavoriteStops,
     toggleFavoriteStop,
+    fetchStops,
   };
 
   Object.keys(methods).forEach((key) => {

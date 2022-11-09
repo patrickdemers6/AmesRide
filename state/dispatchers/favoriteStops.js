@@ -1,7 +1,5 @@
 import { favoriteStopsState } from '../atoms';
-import getFromLocalStorage, {
-  getSetFromLocalStorage,
-} from '../utilities/localforage/getFromLocalStorage';
+import { getSetFromLocalStorage } from '../utilities/localforage/getFromLocalStorage';
 
 export const removeFavoriteStop =
   ({ set }) =>
@@ -34,7 +32,6 @@ export const toggleFavoriteStop =
     set(favoriteStopsState, (favoriteStops) => {
       if (favoriteStops.has(id)) favoriteStops.delete(id);
       else favoriteStops.add(id);
-      console.log(favoriteStops);
       return new Set(favoriteStops);
     });
   };
