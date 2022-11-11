@@ -37,7 +37,7 @@ const RouteSelect = () => {
   React.useEffect(() => {
     setRouteList([
       { label: 'Favorite Stops', value: -2, key: 'fav', index: 0 },
-      { label: 'All Stops', value: -1, key: 'all', index: 1 },
+      { label: 'All Stops/Routes', value: -1, key: 'all', index: 1 },
       ...favoriteRoutes.map((r, i) => ({
         label: r.DisplayName,
         value: r.ID,

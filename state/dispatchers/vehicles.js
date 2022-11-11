@@ -4,9 +4,15 @@ import getVehicleLocations from '../utilities/request/getVehicleLocations';
 export const updateVehicleLocations =
   ({ set }) =>
   async (routeID) => {
-    if (!routeID < 0) return;
+    if (routeID < 0) return;
 
-    const vehicleLocations = await getVehicleLocations(routeID);
+    let vehicleLocations;
+    try {
+      vehicleLocations = await getVehicleLocations(routeID);
+    } catch (e) {
+      console.error(e);
+      return;
+    }
 
     set(vehicleLocationState, (current) => determineUpdatedValue(current, vehicleLocations));
   };

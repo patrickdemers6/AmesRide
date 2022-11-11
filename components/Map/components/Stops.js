@@ -12,14 +12,14 @@ const Stops = ({ onPress }) => {
   const stops = useRecoilValue(currentRouteStopDetailsState);
 
   if (stops && stops.length > 0) {
-    return stops.map((s) => {
+    return stops.map((s, i) => {
       const isFavorite = favoriteStopIDs.has(s.RtpiNumber);
       // the seprate rendering of ImagePin is required to ensure a rerender of the element
       // otherwise performance will be 0 fps
       if (isFavorite)
         return (
           <ImagePin
-            key={s.ID + 'f'}
+            key={s.ID + 'f' + i}
             details={s}
             sizeMultiplier={1}
             onPress={onPress}
@@ -28,7 +28,12 @@ const Stops = ({ onPress }) => {
           </ImagePin>
         );
       return (
-        <ImagePin key={s.ID} details={s} sizeMultiplier={1} onPress={onPress} favorite={isFavorite}>
+        <ImagePin
+          key={s.ID + ' ' + i}
+          details={s}
+          sizeMultiplier={1}
+          onPress={onPress}
+          favorite={isFavorite}>
           <StopImage />
         </ImagePin>
       );
@@ -36,8 +41,8 @@ const Stops = ({ onPress }) => {
   }
 
   if (favoriteStopDetails && favoriteStopDetails.length > 0) {
-    return favoriteStopDetails.map((s) => (
-      <ImagePin key={s.ID} details={s} onPress={onPress} favorite>
+    return favoriteStopDetails.map((s, i) => (
+      <ImagePin key={s.ID + ' ' + i} details={s} onPress={onPress} favorite>
         <FavoriteImage width={25} height={25} />
       </ImagePin>
     ));

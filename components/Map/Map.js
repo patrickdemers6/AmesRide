@@ -21,15 +21,13 @@ const Map = () => {
 
   const mapRef = useRef(null);
 
-  const appState = useRef(AppState.currentState);
-
   React.useEffect(() => {
     const interval = fetchVehiclesOnInterval(route, dispatcher);
 
-    // fetch bus when app comes back into foreground
+    // fetch bus arrivals when app comes back into foreground
     const subscription = AppState.addEventListener('change', (nextAppState) => {
-      if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
-        fetchVehicle(route);
+      if (nextAppState === 'active') {
+        fetchVehicle(route, dispatcher);
       }
     });
 

@@ -3,7 +3,9 @@ import jsonFetch from '../network/jsonFetch';
 
 const getRoutes = async () => {
   const cachedRoutes = await getFromLocalStorage('routes');
-  if (cachedRoutes) return cachedRoutes;
+  if (cachedRoutes) {
+    return cachedRoutes;
+  }
 
   const routes = await jsonFetch('/Region/0/Routes');
 
