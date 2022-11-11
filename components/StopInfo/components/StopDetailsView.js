@@ -1,6 +1,6 @@
 import { Text } from '@ui-kitten/components';
 import React from 'react';
-import { ScrollView, View } from 'react-native';
+import { AppState, ScrollView, View } from 'react-native';
 import { Button, Menu } from 'react-native-paper';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -50,9 +50,18 @@ const StopDetailsView = () => {
     if (!stop) return;
 
     storeStopNameInCache();
+    // fetch bus and upcoming arrivals when app comes back into foreground
+    const subscription = AppState.addEventListener('change', (nextAppState) => {
+      if (nextAppState === 'active') {
+        dispatcher?.fetchUpcomingArrivals(stop);
+      }
+    });
 
     const interval = fetchUpcomingArrivalsOnInterval(stop, dispatcher);
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      subscription.remove();
+    };
   };
 
   const storeArrivalsInCache = () => {

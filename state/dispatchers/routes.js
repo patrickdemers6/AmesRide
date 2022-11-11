@@ -14,7 +14,13 @@ import getWaypoints from '../utilities/request/getWaypoints';
 export const fetchRoutes =
   ({ set }) =>
   async () => {
-    const routes = await getRoutes();
+    let routes;
+    try {
+      routes = await getRoutes();
+    } catch (e) {
+      console.error(e);
+      return;
+    }
 
     if (Object.keys(routes).length === 0) return;
 
@@ -28,12 +34,13 @@ export const fetchRoutes =
     });
     set(routePatternsState, routePatterns);
 
-    const promises = [];
+    let promises = [];
     for (const route of Object.values(routes)) {
       promises.push(updateStops(routes, route.ID, set));
       promises.push(updateWaypoints(routes, route.ID, set));
+      await Promise.all(promises);
+      promises = [];
     }
-    await Promise.all(promises);
   };
 
 export const updateCurrentRoute =
@@ -57,7 +64,13 @@ export const updateCurrentRoute =
 
 const updateWaypoints = async (routes, route, set) => {
   if (routes[route].waypoints) return;
-  let waypoints = await getWaypoints(route);
+  let waypoints;
+  try {
+    waypoints = await getWaypoints(route);
+  } catch (e) {
+    console.error(e);
+    return;
+  }
   waypoints = waypoints[0];
 
   if (waypoints.length > 0) {
@@ -73,7 +86,13 @@ const updateWaypoints = async (routes, route, set) => {
 
 const updateStops = async (routes, route, set) => {
   if (routes[route].stops) return;
-  const stops = await getStops(routes[route].Patterns[0].ID, route);
+  let stops;
+  try {
+    stops = await getStops(routes[route].Patterns[0].ID, route);
+  } catch (e) {
+    console.error(e);
+    return;
+  }
 
   set(routesState, (rs) => {
     const updated = { ...rs };
