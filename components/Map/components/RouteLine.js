@@ -6,10 +6,10 @@ import { routesState } from '../../../state/atoms';
 const RouteLine = ({ route }) => {
   let stops = [];
   const routes = useRecoilValue(routesState);
-  if (route.ID === -2) return;
+  if (route.ID === -2) return null;
 
   if (route.ID === -1) {
-    stops = routes;
+    stops = Object.values(routes);
   } else {
     stops = [route];
   }
