@@ -36,17 +36,18 @@ const RouteSelect = () => {
 
   React.useEffect(() => {
     setRouteList([
-      { label: 'Favorite Stops', value: -1 },
+      { label: 'Favorite Stops', value: -2, key: 'fav', index: 0 },
+      { label: 'All Stops', value: -1, key: 'all', index: 1 },
       ...favoriteRoutes.map((r, i) => ({
         label: r.DisplayName,
         value: r.ID,
-        index: i + 1,
+        index: i + 2,
         key: r.ID + 'f',
       })),
       ...routes.map((r, i) => ({
         label: r.DisplayName,
         value: r.ID,
-        index: favoriteRoutes.length + i + 1,
+        index: favoriteRoutes.length + i + 2,
         key: r.ID,
       })),
     ]);
@@ -93,8 +94,8 @@ const RouteSelect = () => {
                   flexGrow: 1,
                   flex: 1,
                   borderBottomColor:
-                    props.item.index === favoriteRoutes.length ? 'grey' : 'inherit',
-                  borderBottomWidth: props.item.index === favoriteRoutes.length ? 1 : 0,
+                    props.item.index === favoriteRoutes.length + 1 ? 'grey' : 'inherit',
+                  borderBottomWidth: props.item.index === favoriteRoutes.length + 1 ? 1 : 0,
                   backgroundColor: props.item.value === currentRoute ? '#DEDEDE' : 'white',
                 }}>
                 <Text
@@ -104,7 +105,7 @@ const RouteSelect = () => {
                   }}>
                   {props.label}
                 </Text>
-                {props.item.value !== -1 && (
+                {props.item.value >= 0 && (
                   <Pressable
                     onPress={() => favoritesClick(props.item.value)}
                     style={{ paddingHorizontal: 12, paddingVertical: 8 }}>

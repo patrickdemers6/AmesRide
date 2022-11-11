@@ -27,6 +27,13 @@ export const fetchRoutes =
       });
     });
     set(routePatternsState, routePatterns);
+
+    const promises = [];
+    for (const route of Object.values(routes)) {
+      promises.push(updateStops(routes, route.ID, set));
+      promises.push(updateWaypoints(routes, route.ID, set));
+    }
+    await Promise.all(promises);
   };
 
 export const updateCurrentRoute =
@@ -35,7 +42,7 @@ export const updateCurrentRoute =
     set(currentRouteRowState, route);
     set(vehicleLocationState, null);
 
-    if (route === -1) return;
+    if (route < 0) return;
 
     if (clearCurrentStop) {
       set(upcomingArrivalsState, null);
@@ -49,6 +56,7 @@ export const updateCurrentRoute =
   };
 
 const updateWaypoints = async (routes, route, set) => {
+  if (routes[route].waypoints) return;
   let waypoints = await getWaypoints(route);
   waypoints = waypoints[0];
 
@@ -64,6 +72,7 @@ const updateWaypoints = async (routes, route, set) => {
 };
 
 const updateStops = async (routes, route, set) => {
+  if (routes[route].stops) return;
   const stops = await getStops(routes[route].Patterns[0].ID, route);
 
   set(routesState, (rs) => {
