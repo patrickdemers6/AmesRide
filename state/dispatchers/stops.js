@@ -17,7 +17,7 @@ export const setCurrentStop =
 export const fetchUpcomingArrivals =
   ({ set }) =>
   async (stop) => {
-    if (stop.ID === -1) return;
+    if (stop.ID < 0) return;
     const arrivals = await getArrivals(stop.ID);
     set(upcomingArrivalsState, arrivals);
   };

@@ -16,8 +16,8 @@ export const currentRoute = selector({
     const allRoutes = get(routesState);
     const currentRoute = get(currentRouteRowState);
 
-    if (currentRoute === -1) {
-      return { ID: -1 };
+    if (currentRoute < 0) {
+      return { ID: currentRoute };
     }
 
     if (!allRoutes || !currentRoute) {
@@ -97,7 +97,6 @@ export const favoriteStopDetailsState = selector({
     if (Object.keys(allStops).length === 0) return null;
 
     const result = [];
-    console.log({ favoriteStopIDs });
     for (const stopID of favoriteStopIDs.values()) {
       result.push(allStops[stopID]);
     }
@@ -112,9 +111,12 @@ export const currentRouteStopDetailsState = selector({
     const currentRouteID = get(currentRouteRowState);
     const allRoutes = get(routesState);
 
+    if (currentRouteID === -1) {
+      return Object.values(allStops);
+    }
+
     if (
       Object.keys(allStops).length === 0 ||
-      currentRouteID === -1 ||
       Object.keys(allRoutes).length === 0 ||
       !allRoutes[currentRouteID]?.stops
     )

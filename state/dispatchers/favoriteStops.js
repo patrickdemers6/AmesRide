@@ -1,4 +1,4 @@
-import { favoriteStopsState } from '../atoms';
+import { currentRouteRowState, favoriteStopsState } from '../atoms';
 import { getSetFromLocalStorage } from '../utilities/localforage/getFromLocalStorage';
 
 export const removeFavoriteStop =
@@ -24,6 +24,9 @@ export const fetchFavoriteStops =
   async () => {
     const favoritesArray = await getSetFromLocalStorage('favorite-stops');
     set(favoriteStopsState, favoritesArray);
+    if (favoritesArray.size > 0) {
+      set(currentRouteRowState, -2);
+    }
   };
 
 export const toggleFavoriteStop =
