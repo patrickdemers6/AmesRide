@@ -131,3 +131,11 @@ export const currentRouteStopDetailsState = selector({
     return result;
   },
 });
+
+export const isIndividualRoute = selector({
+  key: 'isIndividualRouteSelector',
+  get: ({ get }) => {
+    const currentRouteID = get(currentRouteRowState);
+    return currentRouteID >= 0;
+  },
+});
