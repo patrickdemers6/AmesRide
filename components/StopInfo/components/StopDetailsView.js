@@ -139,6 +139,29 @@ const StopDetailsView = () => {
 
               if (settings?.showFavoriteArrivalsOnly && !favoriteRouteIDs.has(r.ID)) return null;
 
+              const arrivalDate = new Date(new Date().getTime());
+              const minutes = Number.parseInt(
+                arrival.ArriveTime.substring(
+                  arrival.ArriveTime.indexOf(':') + 1,
+                  arrival.ArriveTime.indexOf(':') + 3
+                )
+              );
+              arrivalDate.setMinutes(minutes);
+              const hours = Number.parseInt(
+                arrival.ArriveTime.substring(0, arrival.ArriveTime.indexOf(':'))
+              );
+              arrivalDate.setHours(hours);
+
+              if (new Date().getHours() >= 12 && arrival.ArriveTime.endsWith('AM')) {
+                arrivalDate.setTime(arrivalDate.getTime() + 24 * 60 * 60 * 1000);
+              } else if (arrival.ArriveTime.endsWith('PM')) {
+                arrivalDate.setTime(arrivalDate.getTime() + 12 * 60 * 60 * 1000);
+              }
+
+              const diffMins = Math.round(
+                (((arrivalDate - new Date()) % 86400000) % 3600000) / 60000
+              );
+
               return (
                 <Pressable
                   key={arrival.TripId + arrival.BusName + arrival.RouteID}
@@ -153,9 +176,9 @@ const StopDetailsView = () => {
                     }}>
                     <Text style={{ paddingLeft: 4 }}>
                       {r.DisplayName} - {arrival.ArriveTime} (
-                      {arrival.Minutes > 1
-                        ? arrival.Time + ' minutes'
-                        : arrival.Minutes === 1
+                      {diffMins > 1
+                        ? diffMins + ' minutes'
+                        : diffMins === 1
                         ? '1 minute'
                         : 'arriving'}
                       )
