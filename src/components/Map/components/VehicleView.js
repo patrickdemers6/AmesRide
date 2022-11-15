@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, View } from 'react-native';
 import { Marker } from 'react-native-maps';
 
-import busImage from '../../../assets/arrow.png';
+import busImage from '../../../../assets/arrow.png';
 
 const VehicleView = ({ details }) => {
   const transformMarkerDegrees = calculateMarkerRotation(details);
