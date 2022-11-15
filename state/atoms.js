@@ -15,7 +15,7 @@ export const vehicleLocationState = atom({
 
 export const currentRouteRowState = atom({
   key: 'currentRouteRowState',
-  default: -1,
+  default: -2,
 });
 
 export const dispatcherState = atom({

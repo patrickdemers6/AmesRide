@@ -69,6 +69,10 @@ const RouteSelect = () => {
   };
 
   const handleSelect = (index) => {
+    setShowDropDown(false);
+    if (index == currentRoute) {
+      return;
+    }
     if (index === 0) dispatcher?.updateCurrentRoute(null);
     else dispatcher?.updateCurrentRoute(index);
   };
@@ -83,13 +87,13 @@ const RouteSelect = () => {
           maxHeight={250}
           setOpen={open}
           onClose={close}
-          onSelectItem={(value) => {
-            handleSelect(value);
-          }}
           itemKey="key"
           renderListItem={(props) => {
             return (
-              <Pressable onPress={() => props.onPress(props.item.value)}>
+              <Pressable
+                onPress={() => {
+                  handleSelect(props.item.value);
+                }}>
                 <View
                   style={{
                     height: 40,
