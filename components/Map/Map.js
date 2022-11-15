@@ -14,6 +14,13 @@ const { width, height } = Dimensions.get('window');
 
 const FETCH_BUS_SECONDS_INTERVAL = 5000;
 
+const isuCampusRegion = {
+  latitude: 42.02663,
+  longitude: -93.6466,
+  latitudeDelta: 0.01,
+  longitudeDelta: 0.01,
+};
+
 const Map = () => {
   const route = useRecoilValue(currentRoute);
   const location = useRecoilValue(userLocationState);
@@ -21,32 +28,32 @@ const Map = () => {
 
   const mapRef = useRef(null);
 
-  React.useEffect(() => {
-    const interval = fetchVehiclesOnInterval(route, dispatcher);
+  const updateVehiclesOnForeground = () => {
+    const fetchVehiclesInterval = fetchVehiclesOnInterval(route, dispatcher);
 
     // fetch bus arrivals when app comes back into foreground
-    const subscription = AppState.addEventListener('change', (nextAppState) => {
+    const appToForegroundSubscription = AppState.addEventListener('change', (nextAppState) => {
       if (nextAppState === 'active') {
         fetchVehicle(route, dispatcher);
       }
     });
 
     return () => {
-      clearInterval(interval);
-      subscription.remove();
+      clearInterval(fetchVehiclesInterval);
+      appToForegroundSubscription.remove();
     };
-  }, [route]);
+  };
 
-  React.useEffect(() => {
+  const getCurrentUserLocation = () => {
     (async () => {
       const location = await Location.getCurrentPositionAsync();
       dispatcher?.setUserLocation(location);
     })().catch(() => {
       console.log('No location permissions granted.');
     });
-  }, []);
+  };
 
-  React.useEffect(() => {
+  const moveMapToUser = () => {
     if (!location) return;
 
     mapRef.current.animateToRegion({
@@ -55,22 +62,17 @@ const Map = () => {
       longitudeDelta: 0.01,
       latitudeDelta: 0.01,
     });
-  }, [location]);
-
-  const setStop = (stop) => {
-    dispatcher?.setCurrentStop(stop);
   };
+
+  React.useEffect(updateVehiclesOnForeground, [route]);
+  React.useEffect(getCurrentUserLocation, []);
+  React.useEffect(moveMapToUser, [location]);
 
   return (
     <View style={{ width, height }}>
       <MapView
         style={{ width, height }}
-        initialRegion={{
-          latitude: 42.02663,
-          longitude: -93.6466,
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.01,
-        }}
+        initialRegion={isuCampusRegion}
         showsUserLocation
         onPress={dispatcher?.clearCurrentStop}
         moveOnMarkerPress={false}
@@ -82,7 +84,7 @@ const Map = () => {
         showsIndoors={false}
         showsTraffic={false}>
         <RouteLine route={route} />
-        <Stops stops={route.stops} onPress={setStop} />
+        <Stops stops={route.stops} />
         <Vehicles />
       </MapView>
     </View>

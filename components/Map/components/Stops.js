@@ -1,16 +1,21 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 
-import { favoriteStopsState } from '../../../state/atoms';
+import { dispatcherState, favoriteStopsState } from '../../../state/atoms';
 import { currentRouteStopDetailsState, favoriteStopDetailsState } from '../../../state/selectors';
 import FavoriteStopImage from '../../icons/FavoriteStopImage';
 import RegularStopImage from '../../icons/RegularStopImage';
 import ImagePin from './ImagePin';
 
-const Stops = ({ onPress }) => {
+const Stops = () => {
   const favoriteStopIDs = useRecoilValue(favoriteStopsState);
   const favoriteStopDetails = useRecoilValue(favoriteStopDetailsState);
   const stops = useRecoilValue(currentRouteStopDetailsState);
+  const dispatcher = useRecoilValue(dispatcherState);
+
+  const setActiveStop = (stop) => {
+    dispatcher.setCurrentStop(stop);
+  };
 
   if (stops && stops.length > 0) {
     return stops.map((s, i) => {
@@ -23,7 +28,7 @@ const Stops = ({ onPress }) => {
             key={s.ID + 'f' + i}
             details={s}
             sizeMultiplier={1}
-            onPress={onPress}
+            onPress={setActiveStop}
             favorite={isFavorite}>
             <FavoriteStopImage />
           </ImagePin>
@@ -33,7 +38,7 @@ const Stops = ({ onPress }) => {
           key={s.ID + ' ' + i}
           details={s}
           sizeMultiplier={1}
-          onPress={onPress}
+          onPress={setActiveStop}
           favorite={isFavorite}>
           <RegularStopImage />
         </ImagePin>
@@ -43,7 +48,7 @@ const Stops = ({ onPress }) => {
 
   if (favoriteStopDetails && favoriteStopDetails.length > 0) {
     return favoriteStopDetails.map((s, i) => (
-      <ImagePin key={s.ID + ' ' + i} details={s} onPress={onPress} favorite>
+      <ImagePin key={s.ID + ' ' + i} details={s} onPress={setActiveStop} favorite>
         <FavoriteStopImage width={25} height={25} />
       </ImagePin>
     ));
@@ -52,4 +57,4 @@ const Stops = ({ onPress }) => {
   return null;
 };
 
-export default Stops;
+export default React.memo(Stops);
