@@ -24,8 +24,8 @@ export const fetchFavoriteStops =
   async () => {
     const favoritesArray = await getSetFromLocalStorage('favorite-stops');
     set(favoriteStopsState, favoritesArray);
-    if (favoritesArray.size > 0) {
-      set(currentRouteRowState, -2);
+    if (favoritesArray.size == 0) {
+      set(currentRouteRowState, -1);
     }
   };
 
