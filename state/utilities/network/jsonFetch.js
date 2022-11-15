@@ -5,6 +5,7 @@ const jsonFetch = async (path, options = {}) => {
 
   const result = await fetch(CYRIDE_URL + path, {
     method: 'GET',
+    cache: 'no-cache',
     ...options,
     headers: {
       Accept: 'application/json',
