@@ -159,9 +159,9 @@ const StopDetailsView = () => {
                 arrivalDate.setTime(arrivalDate.getTime() + 12 * 60 * 60 * 1000);
               }
 
-              const diffMins = Math.round(
-                (((arrivalDate - new Date()) % 86400000) % 3600000) / 60000
-              );
+              const diffMins = Math.round((arrivalDate - new Date()) / 1000 / 60);
+
+              if (diffMins > 180) return null;
 
               return (
                 <Pressable
