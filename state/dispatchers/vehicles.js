@@ -1,19 +1,22 @@
-import { vehicleLocationState } from '../atoms';
+import { loadingVehiclesState, vehicleLocationState } from '../atoms';
 import getVehicleLocations from '../utilities/request/getVehicleLocations';
 
 export const updateVehicleLocations =
   ({ set }) =>
   async (routeID) => {
     if (routeID < 0) return;
+    set(loadingVehiclesState, true);
 
     let vehicleLocations;
     try {
       vehicleLocations = await getVehicleLocations(routeID);
     } catch (e) {
+      // if loading fails, do not turn off loading indicator
       console.error(e);
       return;
     }
 
+    set(loadingVehiclesState, false);
     set(vehicleLocationState, (current) => determineUpdatedValue(current, vehicleLocations));
   };
 

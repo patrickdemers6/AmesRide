@@ -74,3 +74,8 @@ export const loadingArrivalsState = atom({
   key: 'loadingArrivalsState',
   default: false,
 });
+
+export const loadingVehiclesState = atom({
+  key: 'loadingVehiclesState',
+  default: false,
+});
