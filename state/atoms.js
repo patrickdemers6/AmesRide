@@ -69,3 +69,8 @@ export const userSettingsState = atom({
   },
   effects: [localForageEffect('userSettingsState')],
 });
+
+export const loadingArrivalsState = atom({
+  key: 'loadingArrivalsState',
+  default: false,
+});

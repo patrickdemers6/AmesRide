@@ -11,11 +11,13 @@ import {
   currentStopState,
   dispatcherState,
   favoriteRoutesState,
+  loadingArrivalsState,
   routePatternsState,
   routesState,
   userSettingsState,
 } from '../../../state/atoms';
 import { isCurrentStopFavorite, upcomingArrivalsSorted } from '../../../state/selectors';
+import LoadingIndicator from '../../ArrivalsLoadingIndicator';
 
 const StopDetailsView = () => {
   const stop = useRecoilValue(currentStopState);
@@ -26,6 +28,7 @@ const StopDetailsView = () => {
   const settings = useRecoilValue(userSettingsState);
   const favoriteRouteIDs = useRecoilValue(favoriteRoutesState);
   const currentStopFavorite = useRecoilValue(isCurrentStopFavorite);
+  const isLoadingArrivals = useRecoilValue(loadingArrivalsState);
   const [menuOpen, setMenuOpen] = React.useState(false);
 
   // used so text doesn't disappear when sliding out
@@ -123,6 +126,7 @@ const StopDetailsView = () => {
         </View>
       </GestureRecognizer>
       <View style={{ flex: 1, height: '100%', paddingBottom: 8 }}>
+        <LoadingIndicator loading={isLoadingArrivals} />
         <ScrollView style={{ padding: 8, height: '100%', width: '100%' }}>
           <Text style={{ fontWeight: 'bold', fontSize: 16 }}>
             Upcoming Arrivals{settings.showFavoriteArrivalsOnly && ' (favorite routes)'}
