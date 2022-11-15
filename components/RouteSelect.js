@@ -14,7 +14,7 @@ import {
 } from '../state/atoms';
 import { ALL_ROUTES, FAVORITE_ROUTES } from '../state/constants';
 import { favoriteRoutesOnlyState, routesSortedState } from '../state/selectors';
-import LoadingIndicator from './ArrivalsLoadingIndicator';
+import LoadingIndicator from './LoadingIndicator';
 
 const setup = async () => {
   await localForage.defineDriver(fsDriver);

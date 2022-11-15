@@ -17,7 +17,7 @@ import {
   userSettingsState,
 } from '../../../state/atoms';
 import { isCurrentStopFavorite, upcomingArrivalsSorted } from '../../../state/selectors';
-import LoadingIndicator from '../../ArrivalsLoadingIndicator';
+import LoadingIndicator from '../../LoadingIndicator';
 
 const StopDetailsView = () => {
   const stop = useRecoilValue(currentStopState);
