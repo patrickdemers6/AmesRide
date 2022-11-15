@@ -144,13 +144,15 @@ const StopDetailsView = () => {
                 arrival.ArriveTime.substring(
                   arrival.ArriveTime.indexOf(':') + 1,
                   arrival.ArriveTime.indexOf(':') + 3
-                )
+                ),
+                10
               );
               arrivalDate.setMinutes(minutes);
               let hours = Number.parseInt(
-                arrival.ArriveTime.substring(0, arrival.ArriveTime.indexOf(':'))
+                arrival.ArriveTime.substring(0, arrival.ArriveTime.indexOf(':')),
+                10
               );
-              if (hours == 12 && arrival.ArriveTime.endsWith('AM')) hours = 0;
+              if (hours === 12 && arrival.ArriveTime.endsWith('AM')) hours = 0;
               arrivalDate.setHours(hours);
 
               if (new Date().getHours() >= 12 && arrival.ArriveTime.endsWith('AM')) {

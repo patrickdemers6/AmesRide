@@ -12,6 +12,7 @@ import {
   favoriteRoutesState,
   loadingVehiclesState,
 } from '../state/atoms';
+import { ALL_ROUTES, FAVORITE_ROUTES } from '../state/constants';
 import { favoriteRoutesOnlyState, routesSortedState } from '../state/selectors';
 import LoadingIndicator from './ArrivalsLoadingIndicator';
 
@@ -43,8 +44,8 @@ const RouteSelect = () => {
 
   React.useEffect(() => {
     setRouteList([
-      { label: 'Favorite Stops', value: -2, key: 'fav', index: 0 },
-      { label: 'All Stops/Routes', value: -1, key: 'all', index: 1 },
+      { label: 'Favorite Stops', value: FAVORITE_ROUTES, key: 'fav', index: 0 },
+      { label: 'All Stops/Routes', value: ALL_ROUTES, key: 'all', index: 1 },
       ...favoriteRoutes.map((r, i) => ({
         label: r.DisplayName,
         value: r.ID,
@@ -70,7 +71,7 @@ const RouteSelect = () => {
 
   const handleSelect = (index) => {
     setShowDropDown(false);
-    if (index == currentRoute) {
+    if (index === currentRoute) {
       return;
     }
     if (index === 0) dispatcher?.updateCurrentRoute(null);
