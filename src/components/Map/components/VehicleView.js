@@ -1,10 +1,12 @@
+import React from 'react';
 import { Image, View } from 'react-native';
 import { Marker } from 'react-native-maps';
 
-import busImage from '../../../assets/arrow.png';
+import busImage from '../../../../assets/arrow.png';
 
 const VehicleView = ({ details }) => {
   const transformMarkerDegrees = calculateMarkerRotation(details);
+
   return (
     <Marker
       coordinate={{
@@ -50,4 +52,4 @@ const calculateMarkerRotation = (vehicle) => {
   return 0;
 };
 
-export default VehicleView;
+export default React.memo(VehicleView);

@@ -3,7 +3,7 @@ import React from 'react';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { RecoilRoot } from 'recoil';
 
-import Main from './Main';
+import Main from './src/Main';
 
 const App = () => {
   React.useEffect(() => {

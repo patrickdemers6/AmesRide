@@ -9,6 +9,7 @@ import {
   stopsState,
   upcomingArrivalsState,
 } from './atoms';
+import { ALL_ROUTES } from './constants';
 
 export const currentRoute = selector({
   key: 'currentRoute',
@@ -111,7 +112,7 @@ export const currentRouteStopDetailsState = selector({
     const currentRouteID = get(currentRouteRowState);
     const allRoutes = get(routesState);
 
-    if (currentRouteID === -1) {
+    if (currentRouteID === ALL_ROUTES) {
       return Object.values(allStops);
     }
 
@@ -128,5 +129,13 @@ export const currentRouteStopDetailsState = selector({
     }
 
     return result;
+  },
+});
+
+export const isIndividualRoute = selector({
+  key: 'isIndividualRouteSelector',
+  get: ({ get }) => {
+    const currentRouteID = get(currentRouteRowState);
+    return currentRouteID >= 0;
   },
 });
