@@ -1,7 +1,6 @@
-import { Text } from '@ui-kitten/components';
 import React from 'react';
 import { View } from 'react-native';
-import { Button, Menu } from 'react-native-paper';
+import { Button, Menu, Text } from 'react-native-paper';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useRecoilValue } from 'recoil';
