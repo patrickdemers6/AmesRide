@@ -5,7 +5,7 @@ import GestureRecognizer from 'react-native-swipe-gestures';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useRecoilValue } from 'recoil';
 
-import { dispatcherState, currentStopState, userSettingsState } from '../../../state/atoms';
+import { dispatcherState, userSettingsState } from '../../../state/atoms';
 import { isCurrentStopFavorite } from '../../../state/selectors';
 
 const TopBanner = ({ stop }) => {
