@@ -4,6 +4,7 @@ import { View, Dimensions, AppState } from 'react-native';
 import MapView from 'react-native-maps';
 import { useRecoilValue } from 'recoil';
 
+import isInServiceBoundary from '../../data/serviceBoundaries';
 import { dispatcherState, userLocationState } from '../../state/atoms';
 import { currentRoute } from '../../state/selectors';
 import RouteLine from './components/RouteLine';
@@ -56,12 +57,16 @@ const Map = () => {
   const moveMapToUser = () => {
     if (!location) return;
 
-    mapRef.current.animateToRegion({
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
-      longitudeDelta: 0.01,
-      latitudeDelta: 0.01,
-    });
+    const { latitude, longitude } = location.coords;
+
+    if (isInServiceBoundary(latitude, longitude)) {
+      mapRef.current.animateToRegion({
+        latitude,
+        longitude,
+        longitudeDelta: 0.01,
+        latitudeDelta: 0.01,
+      });
+    }
   };
 
   React.useEffect(updateVehiclesOnForeground, [route]);
