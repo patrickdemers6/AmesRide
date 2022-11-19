@@ -31,7 +31,10 @@ const SettingsAbout = () => {
     {
       title: 'Contact Developer',
       description: "Found a bug or have a suggestion? Let's chat!",
-      handler: () => Linking.openURL('mailto:patrickdemers6@gmail.com?subject=Ames%20Ride'),
+      handler: () =>
+        Linking.openURL(
+          `mailto:patrickdemers6@gmail.com?subject=Ames%20Ride&body=Version: ${versionNumber}\n\n`
+        ),
     },
     {
       title: 'View on GitHub',
