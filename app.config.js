@@ -2,7 +2,7 @@ module.exports = {
   expo: {
     name: 'Ames Ride',
     slug: 'AmesRide',
-    version: '1.0.5',
+    version: '1.0.6',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
@@ -20,7 +20,7 @@ module.exports = {
       supportsTablet: true,
     },
     android: {
-      versionCode: 7,
+      versionCode: 8,
       config: {
         googleMaps: {
           apiKey: process.env.GOOGLE_MAPS_API_KEY,

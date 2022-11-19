@@ -1,6 +1,6 @@
-import { Text } from '@ui-kitten/components';
 import React from 'react';
 import { View } from 'react-native';
+import { Text } from 'react-native-paper';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import { useRecoilValue } from 'recoil';
 

@@ -1,3 +1,4 @@
+import { NavigationContainer } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import React from 'react';
 import { Provider as PaperProvider } from 'react-native-paper';
@@ -13,11 +14,13 @@ const App = () => {
   }, []);
 
   return (
-    <RecoilRoot>
-      <PaperProvider>
-        <Main />
-      </PaperProvider>
-    </RecoilRoot>
+    <NavigationContainer>
+      <RecoilRoot>
+        <PaperProvider>
+          <Main />
+        </PaperProvider>
+      </RecoilRoot>
+    </NavigationContainer>
   );
 };
 export default App;
