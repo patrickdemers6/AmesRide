@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import React from 'react';
-import { Provider as PaperProvider } from 'react-native-paper';
+import { Provider as PaperProvider, DefaultTheme } from 'react-native-paper';
 import { RecoilRoot } from 'recoil';
 
 import Main from './src/Main';
@@ -16,7 +16,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <RecoilRoot>
-        <PaperProvider>
+        <PaperProvider theme={DefaultTheme}>
           <Main />
         </PaperProvider>
       </RecoilRoot>
