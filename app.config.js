@@ -2,7 +2,7 @@ module.exports = {
   expo: {
     name: 'Ames Ride',
     slug: 'AmesRide',
-    version: '1.0.6',
+    version: '1.0.7',
     sdkVersion: '47.0.0',
     orientation: 'portrait',
     icon: './assets/icon.png',
