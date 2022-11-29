@@ -34,13 +34,12 @@ export const fetchRoutes =
     });
     set(routePatternsState, routePatterns);
 
-    let promises = [];
+    const promises = [];
     for (const route of Object.values(routes)) {
       promises.push(updateStops(routes, route.ID, set));
       promises.push(updateWaypoints(routes, route.ID, set));
-      await Promise.all(promises);
-      promises = [];
     }
+    await Promise.all(promises);
   };
 
 export const updateCurrentRoute =

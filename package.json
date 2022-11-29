@@ -3,7 +3,7 @@
   "version": "1.0.7",
   "license": "GNU3",
   "scripts": {
-    "start": "expo start --dev-client",
+    "start": "expo start",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
@@ -35,7 +35,8 @@
     "react-native-swipe-gestures": "^1.0.5",
     "react-native-vector-icons": "^9.2.0",
     "recoil": "^0.7.5",
-    "expo-updates": "~0.15.6"
+    "expo-updates": "~0.15.6",
+    "expo-dev-client": "~2.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
