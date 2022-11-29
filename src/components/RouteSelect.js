@@ -1,5 +1,5 @@
-import localForage from 'localforage';
-import fsDriver, { driverKey } from 'localforage-expo-filesystem-driver';
+import { driverWithoutSerialization } from '@aveq-research/localforage-asyncstorage-driver';
+import localforage from 'localforage';
 import React from 'react';
 import { View, Text, Pressable } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -17,8 +17,9 @@ import { favoriteRoutesOnlyState, routesSortedState } from '../state/selectors';
 import LoadingIndicator from './LoadingIndicator';
 
 const setup = async () => {
-  await localForage.defineDriver(fsDriver);
-  return localForage.setDriver(driverKey);
+  const driver = driverWithoutSerialization();
+  await localforage.defineDriver(driver);
+  await localforage.setDriver(driver._driver);
 };
 
 const RouteSelect = () => {

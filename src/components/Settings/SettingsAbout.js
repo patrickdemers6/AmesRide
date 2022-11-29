@@ -8,7 +8,7 @@ import RenderListItems from '../RenderListItems';
 const SettingsAbout = () => {
   const projectUrl = 'https://github.com/patrickdemers6/AmesRide';
 
-  const versionNumber = Constants.manifest2.extra.expoClient.version;
+  const versionNumber = Constants.expoConfig?.version || 'Unknown';
 
   const setVersionOnClipboard = async () => {
     await Clipboard.setStringAsync(`Ames Ride Version: ${versionNumber}`);
