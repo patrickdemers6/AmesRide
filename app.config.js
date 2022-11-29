@@ -3,6 +3,7 @@ module.exports = {
     name: 'Ames Ride',
     slug: 'AmesRide',
     version: '1.0.6',
+    sdkVersion: '47.0.0',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',

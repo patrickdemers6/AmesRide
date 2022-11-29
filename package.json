@@ -1,25 +1,26 @@
 {
   "name": "ames-ride",
   "version": "1.0.6",
-  "main": "node_modules/expo/AppEntry.js",
   "license": "GNU3",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "lint": "eslint .",
     "prepare": "husky install"
   },
   "dependencies": {
     "@aveq-research/localforage-asyncstorage-driver": "^3.0.1",
+    "@react-native-async-storage/async-storage": "~1.17.3",
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.1",
-    "expo": "^47.0.3",
+    "expo": "~47.0.8",
     "expo-clipboard": "~4.0.1",
     "expo-constants": "~14.0.2",
     "expo-location": "~15.0.1",
-    "expo-updates": "~0.15.6",
+    "expo-splash-screen": "~0.17.5",
+    "expo-status-bar": "~1.4.2",
     "localforage": "^1.10.0",
     "react": "18.1.0",
     "react-native": "0.70.5",
@@ -34,9 +35,10 @@
     "react-native-swipe-gestures": "^1.0.5",
     "react-native-vector-icons": "^9.2.0",
     "recoil": "^0.7.5",
-    "@react-native-async-storage/async-storage": "~1.17.3"
+    "expo-updates": "~0.15.6"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.9",
     "eslint": "^8.24.0",
     "eslint-config-universe": "^11.1.0",
     "husky": "^8.0.1",
