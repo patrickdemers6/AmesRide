@@ -47,11 +47,13 @@ const Map = () => {
 
   const getCurrentUserLocation = () => {
     (async () => {
-      const location = await Location.getCurrentPositionAsync();
-      dispatcher?.setUserLocation(location);
-    })().catch(() => {
-      console.log('No location permissions granted.');
-    });
+      try {
+        const location = await Location.getCurrentPositionAsync();
+        dispatcher?.setUserLocation(location);
+      } catch (e) {
+        console.log('No location permissions granted.');
+      }
+    })();
   };
 
   const moveMapToUser = () => {
@@ -70,8 +72,11 @@ const Map = () => {
   };
 
   React.useEffect(updateVehiclesOnForeground, [route]);
-  React.useEffect(getCurrentUserLocation, []);
   React.useEffect(moveMapToUser, [location]);
+
+  // get current user location on load and if dispatcher changes
+  React.useEffect(getCurrentUserLocation, []);
+  React.useEffect(getCurrentUserLocation, [dispatcher]);
 
   return (
     <View style={{ width, height }}>

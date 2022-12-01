@@ -8,9 +8,15 @@ import Main from './src/Main';
 
 const App = () => {
   React.useEffect(() => {
-    (async () => {
-      await Location.requestForegroundPermissionsAsync();
-    })();
+    const getLocationPermission = async () => {
+      try {
+        await Location.requestForegroundPermissionsAsync();
+      } catch (e) {
+        console.log('requestForegroundPermissionsAsync failed');
+      }
+    };
+
+    setTimeout(getLocationPermission, 1000);
   }, []);
 
   return (
