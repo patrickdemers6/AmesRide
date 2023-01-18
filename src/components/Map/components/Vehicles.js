@@ -1,5 +1,6 @@
 import React from 'react';
-import { ToastAndroid } from 'react-native';
+import { Platform, ToastAndroid } from 'react-native';
+import Toast from 'react-native-root-toast';
 import { useRecoilValue } from 'recoil';
 
 import { vehicleLocationState } from '../../../state/atoms';
@@ -12,7 +13,14 @@ const Vehicles = () => {
 
   React.useEffect(() => {
     if (vehicles === null || vehicles.length > 0) return;
-    ToastAndroid.show('No busses found on route.', ToastAndroid.SHORT);
+    Toast.show('No busses found on route.', {
+      duration: Toast.durations.SHORT,
+      position: Toast.positions.BOTTOM,
+      shadow: true,
+      animation: true,
+      hideOnPress: true,
+      delay: 0,
+    });
   }, [vehicles]);
 
   if (!isRegularRoute) return null;

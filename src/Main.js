@@ -1,3 +1,4 @@
+import * as Location from 'expo-location';
 import React from 'react';
 import { StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -18,6 +19,22 @@ export default function Main() {
 
   React.useEffect(() => {
     setDispatcher(dispatcherRef.current);
+    const getLocationPermission = async () => {
+      try {
+        await Location.requestForegroundPermissionsAsync();
+      } catch (e) {
+        console.log('requestForegroundPermissionsAsync failed');
+      }
+
+      try {
+        const location = await Location.getCurrentPositionAsync();
+        dispatcherRef.current.setUserLocation(location);
+      } catch (e) {
+        console.log('No location permissions granted.');
+      }
+    };
+
+    setTimeout(getLocationPermission, 1000);
   }, []);
 
   return (

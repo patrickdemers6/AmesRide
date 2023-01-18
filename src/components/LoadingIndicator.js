@@ -9,6 +9,7 @@ const ProgressBar = (props) => {
       color="#C8102F"
       height={1}
       borderColor="white"
+      style={{ backgroundColor: 'white', ...(props.styles || {}) }}
       {...props}
     />
   );

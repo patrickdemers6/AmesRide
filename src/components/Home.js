@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { Portal } from 'react-native-paper';
 
 import Map from './Map/Map';
 import RouteSelect from './RouteSelect';
@@ -24,14 +25,16 @@ const styles = StyleSheet.create({
 const Home = () => {
   return (
     <>
-      <View style={styles.page}>
-        <RouteSelect />
-        <View style={styles.container}>
-          <Map />
-          <StopInfo />
+      <Portal.Host>
+        <View style={styles.page}>
+          <RouteSelect />
+          <View style={styles.container}>
+            <Map />
+            <StopInfo />
+          </View>
         </View>
-      </View>
-      <SettingsFAB />
+        <SettingsFAB />
+      </Portal.Host>
     </>
   );
 };

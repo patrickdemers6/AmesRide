@@ -1,4 +1,5 @@
 import React from 'react';
+import { Portal } from 'react-native-paper';
 import { useRecoilValue } from 'recoil';
 
 import { currentStopState } from '../../state/atoms';
@@ -7,11 +8,12 @@ import StopDetailsView from './components/StopDetailsView';
 
 const StopInfo = () => {
   const info = useRecoilValue(currentStopState);
-
   return (
-    <BottomSheet show={Boolean(info)}>
-      <StopDetailsView />
-    </BottomSheet>
+    <Portal>
+      <BottomSheet show={Boolean(info)}>
+        <StopDetailsView />
+      </BottomSheet>
+    </Portal>
   );
 };
 

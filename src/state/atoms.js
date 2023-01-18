@@ -4,9 +4,9 @@ import { FAVORITE_ROUTES } from './constants';
 import { localForageEffectSet, localForageEffect } from './utilities/localforage/updateEffects';
 
 export const routesState = atom({
-  key: 'routesState',
+  key: 'routesState-1',
   default: {},
-  effects: [localForageEffect('routes')],
+  effects: [localForageEffect('routes-1')],
 });
 
 export const vehicleLocationState = atom({
