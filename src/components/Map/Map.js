@@ -5,13 +5,11 @@ import MapView from 'react-native-maps';
 import { useRecoilValue } from 'recoil';
 
 import isInServiceBoundary from '../../data/serviceBoundaries';
-import { dispatcherState, userLocationState } from '../../state/atoms';
+import { currentStopState, dispatcherState, userLocationState } from '../../state/atoms';
 import { currentRoute } from '../../state/selectors';
 import RouteLine from './components/RouteLine';
 import Stops from './components/Stops';
 import Vehicles from './components/Vehicles';
-
-const { width, height } = Dimensions.get('window');
 
 const FETCH_BUS_SECONDS_INTERVAL = 5000;
 
@@ -26,8 +24,19 @@ const Map = () => {
   const route = useRecoilValue(currentRoute);
   const location = useRecoilValue(userLocationState);
   const dispatcher = useRecoilValue(dispatcherState);
+  const currentStop = useRecoilValue(currentStopState);
+  const [screen, setScreen] = React.useState(Dimensions.get('window'));
+
+  // when user rotates screen, update dimensions of map
+  Dimensions.addEventListener('change', () => {
+    setScreen(Dimensions.get('window'));
+  });
 
   const mapRef = useRef(null);
+
+  const handleMapPress = () => {
+    if (currentStop) dispatcher?.clearCurrentStop();
+  };
 
   const updateVehiclesOnForeground = () => {
     const fetchVehiclesInterval = fetchVehiclesOnInterval(route, dispatcher);
@@ -43,17 +52,6 @@ const Map = () => {
       clearInterval(fetchVehiclesInterval);
       appToForegroundSubscription.remove();
     };
-  };
-
-  const getCurrentUserLocation = () => {
-    (async () => {
-      try {
-        const location = await Location.getCurrentPositionAsync();
-        dispatcher?.setUserLocation(location);
-      } catch (e) {
-        console.log('No location permissions granted.');
-      }
-    })();
   };
 
   const moveMapToUser = () => {
@@ -74,17 +72,13 @@ const Map = () => {
   React.useEffect(updateVehiclesOnForeground, [route]);
   React.useEffect(moveMapToUser, [location]);
 
-  // get current user location on load and if dispatcher changes
-  React.useEffect(getCurrentUserLocation, []);
-  React.useEffect(getCurrentUserLocation, [dispatcher]);
-
   return (
-    <View style={{ width, height }}>
+    <View style={{ width: screen.width, height: screen.height }}>
       <MapView
-        style={{ width, height }}
+        style={{ width: screen.width, height: screen.height }}
         initialRegion={isuCampusRegion}
         showsUserLocation
-        onPress={dispatcher?.clearCurrentStop}
+        onPress={handleMapPress}
         moveOnMarkerPress={false}
         ref={mapRef}
         showsCompass={false}

@@ -70,41 +70,60 @@ const updateWaypoints = async (routes, route, set) => {
     console.error(e);
     return;
   }
-  waypoints = waypoints[0];
 
-  if (waypoints.length > 0) {
-    waypoints = waypoints.map((w) => ({ latitude: w.Latitude, longitude: w.Longitude }));
+  const result = {};
 
-    set(routesState, (rs) => {
-      const updated = { ...rs };
-      updated[route] = { ...updated[route], waypoints };
-      return updated;
-    });
-  }
+  waypoints.forEach((waypoint, i) => {
+    waypoint = waypoint.map((w) => ({ latitude: w.Latitude, longitude: w.Longitude }));
+
+    result[routes[route].Patterns[i].ID] = waypoint;
+  });
+
+  set(routesState, (rs) => {
+    const updated = { ...rs };
+    updated[route] = { ...updated[route], waypoints: result };
+    return updated;
+  });
 };
 
 const updateStops = async (routes, route, set) => {
   if (routes[route].stops) return;
-  let stops;
-  try {
-    stops = await getStops(routes[route].Patterns[0].ID, route);
-  } catch (e) {
-    console.error(e);
-    return;
-  }
+
+  const promises = [];
+
+  const allStops = {};
+  const result = {};
+
+  routes[route].Patterns.forEach((pattern) => {
+    promises.push(
+      (async () => {
+        let stops;
+        try {
+          stops = await getStops(pattern.ID, route);
+        } catch (e) {
+          console.error(e);
+          return;
+        }
+        result[pattern.ID] = stops.map((s) => s.RtpiNumber);
+        stops.forEach((stop) => {
+          allStops[stop.RtpiNumber] = stop;
+        });
+      })()
+    );
+  });
+
+  await Promise.all(promises);
 
   set(routesState, (rs) => {
     const updated = { ...rs };
-    updated[route] = { ...updated[route], stops: stops.map((s) => s.RtpiNumber) };
+    updated[route] = {
+      ...updated[route],
+      stops: result,
+    };
     return updated;
   });
 
   set(stopsState, (current) => {
-    const toAdd = {};
-    stops.forEach((stop) => {
-      toAdd[stop.RtpiNumber] = stop;
-    });
-
-    return { ...current, ...toAdd };
+    return { ...current, ...allStops };
   });
 };

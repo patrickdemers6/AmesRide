@@ -8,6 +8,7 @@ import {
   routesState,
   stopsState,
   upcomingArrivalsState,
+  vehicleLocationState,
 } from './atoms';
 import { ALL_ROUTES } from './constants';
 
@@ -111,8 +112,10 @@ export const currentRouteStopDetailsState = selector({
     const allStops = get(stopsState);
     const currentRouteID = get(currentRouteRowState);
     const allRoutes = get(routesState);
+    const currentPattern = get(currentPatternSelector);
 
     if (currentRouteID === ALL_ROUTES) {
+      console.log(allStops);
       return Object.values(allStops);
     }
 
@@ -123,8 +126,13 @@ export const currentRouteStopDetailsState = selector({
     )
       return [];
 
+    let pattern = currentPattern;
+    if (pattern === null) {
+      pattern = Object.keys(allRoutes[currentRouteID]?.stops)[0];
+    }
+
     const result = [];
-    for (const stopID of allRoutes[currentRouteID]?.stops) {
+    for (const stopID of allRoutes[currentRouteID]?.stops[pattern]) {
       if (allStops[stopID]) result.push(allStops[stopID]);
     }
 
@@ -137,5 +145,17 @@ export const isIndividualRoute = selector({
   get: ({ get }) => {
     const currentRouteID = get(currentRouteRowState);
     return currentRouteID >= 0;
+  },
+});
+
+export const currentPatternSelector = selector({
+  key: 'currentPatternSelector',
+  get: ({ get }) => {
+    const vehicles = get(vehicleLocationState);
+    const route = get(currentRoute);
+
+    if (!vehicles) return null;
+    if (vehicles.length > 0) return vehicles[0].PatternId;
+    return route.Patterns[0].ID;
   },
 });

@@ -2,7 +2,7 @@ import getFromLocalStorage from '../localforage/getFromLocalStorage';
 import jsonFetch from '../network/jsonFetch';
 
 const getRoutes = async () => {
-  const cachedRoutes = await getFromLocalStorage('routes');
+  const cachedRoutes = await getFromLocalStorage('routes-1');
   if (cachedRoutes) {
     return cachedRoutes;
   }
