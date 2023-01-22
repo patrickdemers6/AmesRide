@@ -20,6 +20,10 @@ module.exports = {
     ios: {
       supportsTablet: true,
       bundleIdentifier: 'com.demerstech.amesride',
+      infoPlist: {
+        NSLocationWhenInUseUsageDescription:
+          'Ames Ride uses your location to display your current location relative to busses and bus stops.',
+      },
     },
     android: {
       config: {
