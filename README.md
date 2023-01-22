@@ -8,9 +8,10 @@ With ratings on the Play Store of 1.9 stars and 2.3 stars, the existing solution
 
 # Download
 
-The app is available on the [Google Play Store](https://play.google.com/store/apps/details?id=com.demerstech.amesride) or as an APK in the [releases](https://github.com/patrickdemers6/AmesRide/releases) section.
+The app is available on the [Apple App Store](https://apps.apple.com/us/app/ames-ride/id1666007719), [Google Play Store](https://play.google.com/store/apps/details?id=com.demerstech.amesride), or as an APK in the [releases](https://github.com/patrickdemers6/AmesRide/releases) section.
 
-<a href='https://play.google.com/store/apps/details?id=com.demerstech.amesride&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="200"/></a>
+<a href="https://apps.apple.com/us/app/ames-ride/id1666007719?itsct=apps_box_badge&amp;itscg=30200" style="overflow: hidden; border-radius: 13px; width: 200px; height: 83px;" target="_blank"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1674345600" alt="Download on the App Store" style="border-radius: 13px; width: 200px; height: 83px;"></a>
+<a href='https://play.google.com/store/apps/details?id=com.demerstech.amesride&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1' target="_blank"><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="250"/></a>
 
 # Features
 
