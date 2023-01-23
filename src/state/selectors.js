@@ -115,7 +115,6 @@ export const currentRouteStopDetailsState = selector({
     const currentPattern = get(currentPatternSelector);
 
     if (currentRouteID === ALL_ROUTES) {
-      console.log(allStops);
       return Object.values(allStops);
     }
 
@@ -132,7 +131,9 @@ export const currentRouteStopDetailsState = selector({
     }
 
     const result = [];
-    for (const stopID of allRoutes[currentRouteID]?.stops[pattern]) {
+    const stopsInPattern = allRoutes[currentRouteID]?.stops[pattern];
+    if (!stopsInPattern) return [];
+    for (const stopID of stopsInPattern) {
       if (allStops[stopID]) result.push(allStops[stopID]);
     }
 
