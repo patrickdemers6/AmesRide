@@ -37,6 +37,7 @@ module.exports = {
       },
       package: 'com.demerstech.amesride',
     },
+    jsEngine: 'hermes',
     web: {
       favicon: './assets/favicon.png',
     },

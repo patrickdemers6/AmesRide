@@ -1,11 +1,16 @@
+import { driverWithoutSerialization } from '@aveq-research/localforage-asyncstorage-driver';
+import localforage from 'localforage';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Portal } from 'react-native-paper';
+import { useRecoilValue } from 'recoil';
 
+import { dispatcherState } from '../state/atoms';
 import Map from './Map/Map';
 import RouteSelect from './RouteSelect';
 import SettingsFAB from './Settings/FAB';
 import StopInfo from './StopInfo/StopInfo';
+import Websocket from './Websocket';
 
 const styles = StyleSheet.create({
   page: {
@@ -22,21 +27,44 @@ const styles = StyleSheet.create({
   },
 });
 
+const setup = async () => {
+  const driver = driverWithoutSerialization();
+  await localforage.defineDriver(driver);
+  await localforage.setDriver(driver._driver);
+};
+
 const Home = () => {
+  const dispatcher = useRecoilValue(dispatcherState);
+  const [updatedOnce, setUpdatedOnce] = React.useState(false);
+
+  React.useEffect(() => {
+    (async () => {
+      if (!dispatcher || updatedOnce) return;
+      setUpdatedOnce(true);
+      await setup();
+      dispatcher?.fetchData();
+      dispatcher?.fetchFavoriteStops();
+      dispatcher?.fetchFavorites();
+      dispatcher?.fetchUserSettings();
+    })();
+  }, []);
+
   return (
     <>
-      <Portal.Host>
-        <View style={styles.page}>
-          <RouteSelect />
-          <View style={styles.container}>
-            <Map />
-            <StopInfo />
+      <Websocket>
+        <Portal.Host>
+          <View style={styles.page}>
+            <RouteSelect />
+            <View style={styles.container}>
+              <Map />
+              <StopInfo />
+            </View>
           </View>
-        </View>
-        <SettingsFAB />
-      </Portal.Host>
+          <SettingsFAB />
+        </Portal.Host>
+      </Websocket>
     </>
   );
 };
 
-export default Home;
+export default React.memo(Home);

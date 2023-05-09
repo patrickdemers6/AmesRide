@@ -1,8 +1,5 @@
-import { driverWithoutSerialization } from '@aveq-research/localforage-asyncstorage-driver';
-import Constants from 'expo-constants';
-import localforage from 'localforage';
 import React from 'react';
-import { View, Text, Pressable, Platform, StatusBar } from 'react-native';
+import { View, Text, Pressable, Platform } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Portal } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -11,6 +8,7 @@ import { useRecoilValue } from 'recoil';
 
 import {
   currentRouteRowState,
+  dataState,
   dispatcherState,
   favoriteRoutesState,
   loadingVehiclesState,
@@ -19,13 +17,12 @@ import { ALL_ROUTES, FAVORITE_ROUTES } from '../state/constants';
 import { favoriteRoutesOnlyState, routesSortedState } from '../state/selectors';
 import LoadingIndicator from './LoadingIndicator';
 
-const setup = async () => {
-  const driver = driverWithoutSerialization();
-  await localforage.defineDriver(driver);
-  await localforage.setDriver(driver._driver);
-};
+DropDownPicker.modifyTranslation('EN', {
+  PLACEHOLDER: 'Loading...',
+});
 
 const RouteSelect = () => {
+  const data = useRecoilValue(dataState);
   const routes = useRecoilValue(routesSortedState);
   const dispatcher = useRecoilValue(dispatcherState);
   const favoriteRoutes = useRecoilValue(favoriteRoutesOnlyState);
@@ -37,33 +34,24 @@ const RouteSelect = () => {
   const insets = useSafeAreaInsets();
 
   React.useEffect(() => {
-    (async () => {
-      await setup();
-      dispatcher?.fetchRoutes();
-      dispatcher?.fetchFavoriteStops();
-      dispatcher?.fetchStops();
-      dispatcher?.fetchFavorites();
-      dispatcher?.fetchUserSettings();
-    })();
-  }, [dispatcher]);
-
-  React.useEffect(() => {
-    setRouteList([
-      { label: 'Favorite Stops', value: FAVORITE_ROUTES, key: 'fav', index: 0 },
-      { label: 'All Stops/Routes', value: ALL_ROUTES, key: 'all', index: 1 },
-      ...favoriteRoutes.map((r, i) => ({
-        label: r.DisplayName,
-        value: r.ID,
-        index: i + 2,
-        key: r.ID + 'f',
-      })),
-      ...routes.map((r, i) => ({
-        label: r.DisplayName,
-        value: r.ID,
-        index: favoriteRoutes.length + i + 2,
-        key: r.ID,
-      })),
-    ]);
+    if (data?.routes) {
+      setRouteList([
+        { label: 'Favorite Stops', value: FAVORITE_ROUTES, key: 'fav', index: 0 },
+        { label: 'All Stops/Routes', value: ALL_ROUTES, key: 'all', index: 1 },
+        ...favoriteRoutes.map((r, i) => ({
+          label: r.route_long_name,
+          value: r.route_id,
+          index: i + 2,
+          key: r.route_id + 'f',
+        })),
+        ...Object.values(routes).map((r, i) => ({
+          label: r.route_long_name,
+          value: r.route_id,
+          index: favoriteRoutes.length + i + 2,
+          key: r.route_id,
+        })),
+      ]);
+    }
   }, [routes, favoriteRoutes]);
 
   const open = () => setShowDropDown(true);

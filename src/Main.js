@@ -22,14 +22,14 @@ export default function Main() {
     const getLocationPermission = async () => {
       try {
         await Location.requestForegroundPermissionsAsync();
-      } catch (e) {
+      } catch {
         console.log('requestForegroundPermissionsAsync failed');
       }
 
       try {
         const location = await Location.getCurrentPositionAsync();
         dispatcherRef.current.setUserLocation(location);
-      } catch (e) {
+      } catch {
         console.log('No location permissions granted.');
       }
     };
