@@ -15,8 +15,21 @@ const TopBanner = ({ stop }) => {
 
   const [menuOpen, setMenuOpen] = React.useState(false);
 
-  // used so text doesn't disappear when sliding out
+  // when the drawer closes, the stop name disappears
+  // this cache holds the name to ensure the ui shows stop name as drawer slides away
   const [cached, setCached] = React.useState('');
+
+  const storeStopNameInCache = () => {
+    setCached(stop.stop_name);
+  };
+
+  const handleUpdatedStop = () => {
+    if (!stop) return;
+
+    storeStopNameInCache();
+  };
+
+  React.useEffect(handleUpdatedStop, [stop]);
 
   const toggleFilterSetting = () => {
     dispatcher?.toggleUserSetting('showFavoriteArrivalsOnly');
@@ -30,20 +43,8 @@ const TopBanner = ({ stop }) => {
   };
 
   const favoriteStop = () => {
-    dispatcher?.toggleFavoriteStop(stop.RtpiNumber);
+    dispatcher?.toggleFavoriteStop(stop.stop_id);
   };
-
-  const storeStopNameInCache = () => {
-    setCached(stop.Name);
-  };
-
-  const handleUpdatedStop = () => {
-    if (!stop) return;
-
-    storeStopNameInCache();
-  };
-
-  React.useEffect(handleUpdatedStop, [stop]);
 
   return (
     <GestureRecognizer onSwipeDown={dispatcher?.clearCurrentStop} style={{ width: '100%' }}>
@@ -63,7 +64,7 @@ const TopBanner = ({ stop }) => {
             paddingLeft: 24,
             paddingRight: 12,
           }}>
-          <Text style={{ width: '100%', float: 'left' }}>{stop?.Name || cached}</Text>
+          <Text style={{ width: '100%', float: 'left' }}>{stop?.stop_name || cached}</Text>
           <Menu
             visible={menuOpen}
             style={{ width: 250 }}

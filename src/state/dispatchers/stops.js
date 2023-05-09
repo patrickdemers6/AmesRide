@@ -29,6 +29,25 @@ export const fetchUpcomingArrivals =
     set(upcomingArrivalsState, arrivals);
   };
 
+export const setUpcomingArrivals =
+  ({ set, snapshot }) =>
+  (websocketPayload) => {
+    if (!websocketPayload) {
+      set(upcomingArrivalsState, null);
+      set(loadingArrivalsState, true);
+      return;
+    }
+
+    const stopState = snapshot.getLoadable(currentStopState).contents;
+    if (!stopState) return;
+    const currentStopId = stopState.stop_id;
+
+    if (currentStopId === websocketPayload.k) {
+      set(upcomingArrivalsState, websocketPayload.data ?? []);
+      set(loadingArrivalsState, false);
+    }
+  };
+
 export const fetchStops =
   ({ set }) =>
   async () => {

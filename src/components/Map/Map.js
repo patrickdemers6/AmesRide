@@ -1,6 +1,5 @@
-import * as Location from 'expo-location';
 import React, { useRef } from 'react';
-import { View, Dimensions, AppState } from 'react-native';
+import { View, Dimensions } from 'react-native';
 import MapView from 'react-native-maps';
 import { useRecoilValue } from 'recoil';
 
@@ -10,8 +9,6 @@ import { currentRoute } from '../../state/selectors';
 import RouteLine from './components/RouteLine';
 import Stops from './components/Stops';
 import Vehicles from './components/Vehicles';
-
-const FETCH_BUS_SECONDS_INTERVAL = 5000;
 
 const isuCampusRegion = {
   latitude: 42.02663,
@@ -38,22 +35,6 @@ const Map = () => {
     if (currentStop) dispatcher?.clearCurrentStop();
   };
 
-  const updateVehiclesOnForeground = () => {
-    const fetchVehiclesInterval = fetchVehiclesOnInterval(route, dispatcher);
-
-    // fetch bus arrivals when app comes back into foreground
-    const appToForegroundSubscription = AppState.addEventListener('change', (nextAppState) => {
-      if (nextAppState === 'active') {
-        fetchVehicle(route, dispatcher);
-      }
-    });
-
-    return () => {
-      clearInterval(fetchVehiclesInterval);
-      appToForegroundSubscription.remove();
-    };
-  };
-
   const moveMapToUser = () => {
     if (!location) return;
 
@@ -69,7 +50,6 @@ const Map = () => {
     }
   };
 
-  React.useEffect(updateVehiclesOnForeground, [route]);
   React.useEffect(moveMapToUser, [location]);
 
   return (
@@ -88,19 +68,11 @@ const Map = () => {
         showsIndoors={false}
         showsTraffic={false}>
         <RouteLine route={route} />
-        <Stops stops={route.stops} />
+        <Stops />
         <Vehicles />
       </MapView>
     </View>
   );
-};
-
-const fetchVehicle = (route, dispatcher) => dispatcher?.updateVehicleLocations(route.ID);
-
-const fetchVehiclesOnInterval = (route, dispatcher) => {
-  fetchVehicle(route, dispatcher);
-
-  return setInterval(() => fetchVehicle(route, dispatcher), FETCH_BUS_SECONDS_INTERVAL);
 };
 
 export default Map;

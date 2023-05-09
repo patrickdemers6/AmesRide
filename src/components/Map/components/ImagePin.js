@@ -25,8 +25,8 @@ class ImagePin extends PureComponent {
         tracksViewChanges={Platform.OS === 'ios'}
         onPress={this.onPress}
         coordinate={{
-          latitude: this.props.details.Latitude,
-          longitude: this.props.details.Longitude,
+          latitude: this.props.details.latitude,
+          longitude: this.props.details.longitude,
         }}
         style={{ width: 45, height: 45 }}
         anchor={{ x: 0.5, y: 0.5 }}>
