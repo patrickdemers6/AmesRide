@@ -1,43 +1,33 @@
 import { useRecoilCallback } from 'recoil';
 
-import {
-  addFavoriteStop,
-  removeFavoriteStop,
-  fetchFavoriteStops,
-  toggleFavoriteStop,
-} from './dispatchers/favoriteStops';
+import { setData, fetchData } from './dispatchers/data';
+import { fetchFavoriteStops, toggleFavoriteStop } from './dispatchers/favoriteStops';
 import { addFavorite, removeFavorite, fetchFavorites } from './dispatchers/favorites';
-import { fetchRoutes, updateCurrentRoute } from './dispatchers/routes';
-import {
-  clearCurrentStop,
-  setCurrentStop,
-  fetchUpcomingArrivals,
-  fetchStops,
-} from './dispatchers/stops';
+import { setLoading } from './dispatchers/loading';
+import { updateCurrentRoute } from './dispatchers/routes';
+import { clearCurrentStop, setCurrentStop, setUpcomingArrivals } from './dispatchers/stops';
 import { setUserLocation } from './dispatchers/userLocation';
-import { fetchUserSettings, setUserSetting, toggleUserSetting } from './dispatchers/userSettings';
-import { updateVehicleLocations } from './dispatchers/vehicles';
+import { fetchUserSettings, toggleUserSetting } from './dispatchers/userSettings';
+import { setVehicleLocations } from './dispatchers/vehicles';
 
 export const createDispatcher = () => {
   const methods = {
-    fetchRoutes,
     updateCurrentRoute,
-    updateVehicleLocations,
+    setVehicleLocations,
     addFavorite,
     removeFavorite,
     fetchFavorites,
     clearCurrentStop,
     setCurrentStop,
-    fetchUpcomingArrivals,
+    setUpcomingArrivals,
     setUserLocation,
     fetchUserSettings,
-    setUserSetting,
     toggleUserSetting,
-    removeFavoriteStop,
-    addFavoriteStop,
     fetchFavoriteStops,
     toggleFavoriteStop,
-    fetchStops,
+    setLoading,
+    setData,
+    fetchData,
   };
 
   Object.keys(methods).forEach((key) => {

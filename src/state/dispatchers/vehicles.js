@@ -1,47 +1,13 @@
-import { loadingVehiclesState, vehicleLocationState } from '../atoms';
-import getVehicleLocations from '../utilities/request/getVehicleLocations';
+import { vehicleLocationState, vehicleLocationWaitingState } from '../atoms';
+import { currentRoute } from '../selectors';
 
-export const updateVehicleLocations =
-  ({ set }) =>
-  async (routeID) => {
-    if (routeID < 0) return;
-    set(loadingVehiclesState, true);
+export const setVehicleLocations =
+  ({ set, snapshot }) =>
+  async (websocketPayload) => {
+    const currentRouteId = await snapshot.getLoadable(currentRoute).contents.route_id;
 
-    let vehicleLocations;
-    try {
-      vehicleLocations = await getVehicleLocations(routeID);
-    } catch (e) {
-      // if loading fails, do not turn off loading indicator
-      console.error(e);
-      return;
+    if (currentRouteId === websocketPayload.k) {
+      set(vehicleLocationState, websocketPayload.data ?? []);
+      set(vehicleLocationWaitingState, false);
     }
-
-    set(loadingVehiclesState, false);
-    set(vehicleLocationState, (current) => determineUpdatedValue(current, vehicleLocations));
   };
-
-const NO_VEHICLES_FOUND = [];
-const VEHICLES_LOADING = null;
-
-const hasVehicles = (vehicles) => {
-  return vehicles.length > 0;
-};
-
-/**
- * Determines the new state for vehicleLocationsState.
- *
- * if new vehicles -> new vehicles;
- * else if was loading -> no vehicles;
- * else -> use existing vehicles;
- *
- * @param existingVehicleLocations vehicle locations prior to fetch
- * @param updatedVehicleLocations vehicle locations from fetch
- * @returns {*[]|*} updated vehicle locations state
- */
-const determineUpdatedValue = (existingVehicleLocations, updatedVehicleLocations) => {
-  if (hasVehicles(updatedVehicleLocations)) return updatedVehicleLocations;
-
-  if (existingVehicleLocations === VEHICLES_LOADING) return NO_VEHICLES_FOUND;
-
-  return existingVehicleLocations;
-};

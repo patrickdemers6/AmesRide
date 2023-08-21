@@ -2,30 +2,33 @@ import React from 'react';
 import { useRecoilValue } from 'recoil';
 
 import { dispatcherState, favoriteStopsState } from '../../../state/atoms';
-import { currentRouteStopDetailsState, favoriteStopDetailsState } from '../../../state/selectors';
+import { stopsInCurrentTripSelector, favoriteStopDetailsState } from '../../../state/selectors';
 import FavoriteStopImage from '../../icons/FavoriteStopImage';
 import RegularStopImage from '../../icons/RegularStopImage';
 import ImagePin from './ImagePin';
 
+/**
+ * Renders all stops on the map for the given trip.
+ */
 const Stops = () => {
-  const favoriteStopIDs = useRecoilValue(favoriteStopsState);
-  const favoriteStopDetails = useRecoilValue(favoriteStopDetailsState);
-  const stops = useRecoilValue(currentRouteStopDetailsState);
-  const dispatcher = useRecoilValue(dispatcherState);
+  const stops = useRecoilValue(stopsInCurrentTripSelector);
+  const favoriteStops = useRecoilValue(favoriteStopDetailsState);
+  const favoriteStopIds = useRecoilValue(favoriteStopsState);
 
+  const dispatcher = useRecoilValue(dispatcherState);
   const setActiveStop = (stop) => {
     dispatcher.setCurrentStop(stop);
   };
 
-  if (stops && stops.length > 0) {
+  if (stops) {
     return stops.map((s, i) => {
-      const isFavorite = favoriteStopIDs.has(s.RtpiNumber);
-      // the seprate rendering of ImagePin is required to ensure a rerender of the element
+      const isFavorite = favoriteStopIds.has(s.stop_id);
+      // the seprate rendering of ImagePin is required to ensure a re-render of the element
       // otherwise performance will be 0 fps
       if (isFavorite)
         return (
           <ImagePin
-            key={s.ID + 'f' + i}
+            key={s.stop_id + 'f' + i}
             details={s}
             sizeMultiplier={1}
             onPress={setActiveStop}
@@ -35,7 +38,7 @@ const Stops = () => {
         );
       return (
         <ImagePin
-          key={s.ID + ' ' + i}
+          key={s.stop_id + ' ' + i}
           details={s}
           sizeMultiplier={1}
           onPress={setActiveStop}
@@ -46,9 +49,9 @@ const Stops = () => {
     });
   }
 
-  if (favoriteStopDetails && favoriteStopDetails.length > 0) {
-    return favoriteStopDetails.map((s, i) => (
-      <ImagePin key={s.ID + ' ' + i} details={s} onPress={setActiveStop} favorite>
+  if (favoriteStops) {
+    return favoriteStops.map((s, i) => (
+      <ImagePin key={s.stop_id + ' ' + i} details={s} onPress={setActiveStop} favorite>
         <FavoriteStopImage width={25} height={25} />
       </ImagePin>
     ));

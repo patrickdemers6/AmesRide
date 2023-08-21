@@ -3,15 +3,14 @@ import { atom } from 'recoil';
 import { FAVORITE_ROUTES } from './constants';
 import { localForageEffectSet, localForageEffect } from './utilities/localforage/updateEffects';
 
-export const routesState = atom({
-  key: 'routesState-1',
-  default: {},
-  effects: [localForageEffect('routes-1')],
-});
-
 export const vehicleLocationState = atom({
   key: 'vehicleLocationState',
   default: null,
+});
+
+export const vehicleLocationWaitingState = atom({
+  key: 'vehicleLocationWaitingState',
+  default: false,
 });
 
 export const currentRouteRowState = atom({
@@ -51,18 +50,6 @@ export const favoriteStopsState = atom({
   effects: [localForageEffectSet('favorite-stops')],
 });
 
-export const stopsState = atom({
-  key: 'stopsState',
-  default: {},
-  effects: [localForageEffect('stops-state')],
-});
-
-export const routePatternsState = atom({
-  key: 'routePatternsState',
-  default: {},
-  effects: [localForageEffect('route-patterns')],
-});
-
 export const userSettingsState = atom({
   key: 'userSettingsState',
   default: {
@@ -79,4 +66,20 @@ export const loadingArrivalsState = atom({
 export const loadingVehiclesState = atom({
   key: 'loadingVehiclesState',
   default: false,
+});
+
+export const websocketState = atom({
+  key: 'websocketState',
+  default: null,
+});
+
+export const dataState = atom({
+  key: 'dataState',
+  default: { routes: null, stops: null, trips: null, shapes: null },
+  effects: [localForageEffect('dataState')],
+});
+export const dataHashState = atom({
+  key: 'dataHashState',
+  default: '',
+  effects: [localForageEffect('dataHashState')],
 });
