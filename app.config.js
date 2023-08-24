@@ -2,7 +2,7 @@ module.exports = {
   expo: {
     name: 'Ames Ride',
     slug: 'AmesRide',
-    version: '1.2.0',
+    version: '1.2.1',
     sdkVersion: '47.0.0',
     orientation: 'portrait',
     icon: './assets/icon.png',
@@ -37,7 +37,6 @@ module.exports = {
       },
       package: 'com.demerstech.amesride',
     },
-    jsEngine: 'hermes',
     web: {
       favicon: './assets/favicon.png',
     },
