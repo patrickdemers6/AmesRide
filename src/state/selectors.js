@@ -54,6 +54,8 @@ export const favoriteRoutesOnlyState = selector({
 
     const favorites = [];
     favoriteRouteIds.forEach((routeId) => {
+      // routeId used to be a number. ignore these
+      if (typeof routeId !== 'string' || !data.routes[routeId]) return;
       favorites.push(data.routes[routeId]);
     });
 

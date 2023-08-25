@@ -1,6 +1,6 @@
 {
   "name": "ames-ride",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "license": "GNU3",
   "scripts": {
     "start": "expo start",
