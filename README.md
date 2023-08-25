@@ -51,6 +51,18 @@ Switching routes is a simple tap away!
 
 - Location: Ames Ride requests location permissions to locate the user on the map. This permission is not required.
 
+# Contributing
+
+Community involvement in Ames Ride is welcomed and appreciated. Ames community members of all technical abilities can help the project thrive. Some ways you can get involved:
+
+- Join the Ames Ride [Discord server](https://discord.gg/WHkN9jfn) to share feedback, get help with issues, learn about contributing code, or just to say hello :wave:
+- Submit pull requests
+- Share bug reports
+- Become a beta tester
+  - Android users, [join here](https://play.google.com/apps/testing/com.demerstech.amesride)
+  - Apple users, you will need to install the "Test Flight" App which is released by Apple. Then, [join the beta group](https://testflight.apple.com/join/LRhx7d6D).
+- Tell your friends about Ames Ride!
+
 # Privacy
 
 This application does not log or store user data.
@@ -60,7 +72,6 @@ However, the application does communicate with third party services during norma
 ## External Services
 
 - **Google Maps** is used to display the map within the application. [Google privacy policy](https://policies.google.com/privacy).
-- **CyRide API** is used to fetch details about routes, bus stops, vehicles, etc. This API is powered by GMV. Their [privacy policy](https://www.gmv.com/en-es/privacy-policy).
 - **Expo** is used to manage app deployments. When you launch the application, a request is sent to Expo to check if a new version is available. If there is a new version of the application, it will then be downloaded from Expo's servers. Expo does not collect end-user data. [Privacy policy](https://expo.dev/privacy).
 
 # Assets
