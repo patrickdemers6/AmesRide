@@ -23,12 +23,7 @@ const Settings = () => {
     { title: 'Advanced', handler: () => openScreen('Settings/Advanced') },
   ];
 
-  return (
-    <>
-      <Stack.Screen name="Settings/About" component={SettingsAbout} />
-      <RenderListItems items={items} />
-    </>
-  );
+  return <RenderListItems items={items} />;
 };
 
 export default Settings;
