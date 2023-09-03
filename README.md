@@ -55,7 +55,7 @@ Switching routes is a simple tap away!
 
 Community involvement in Ames Ride is welcomed and appreciated. Ames community members of all technical abilities can help the project thrive. Some ways you can get involved:
 
-- Join the Ames Ride [Discord server](https://discord.gg/WHkN9jfn) to share feedback, get help with issues, learn about contributing code, or just to say hello :wave:
+- Join the Ames Ride [Discord server](https://discord.gg/CW4bjy8TEX) to share feedback, get help with issues, learn about contributing code, or just to say hello :wave:
 - Submit pull requests
 - Share bug reports
 - Become a beta tester
