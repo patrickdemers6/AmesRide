@@ -48,5 +48,17 @@ module.exports = {
         projectId: '66ed03a0-a25d-4e73-ba27-973d8ff7a2ae',
       },
     },
+    plugins: [
+      [
+        'expo-build-properties',
+        {
+          android: {
+            compileSdkVersion: 33,
+            targetSdkVersion: 33,
+            buildToolsVersion: '33.0.2',
+          },
+        },
+      ],
+    ],
   },
 };

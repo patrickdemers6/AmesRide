@@ -39,7 +39,8 @@
     "react-native-swipe-gestures": "^1.0.5",
     "react-native-vector-icons": "^9.2.0",
     "recoil": "^0.7.5",
-    "socket.io-client": "^4.5.4"
+    "socket.io-client": "^4.5.4",
+    "expo-build-properties": "~0.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
