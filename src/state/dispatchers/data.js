@@ -1,3 +1,6 @@
+import Constants from 'expo-constants';
+import { Platform } from 'react-native';
+
 import { dataHashState, dataState } from '../atoms';
 import getFromLocalStorage from '../utilities/localforage/getFromLocalStorage';
 
@@ -33,7 +36,12 @@ export const fetchData =
 const getPersistentData = async (hash) => {
   try {
     // TODO: abstract urls to environment variable
-    const dataResponse = await fetch('https://amesride.demerstech.com/data?hash=' + hash);
+    let url = `https://amesride.demerstech.com/data?hash=${hash}&os=${Platform.OS}`;
+    if (Constants.expoConfig?.version) {
+      url += `&version=${Constants.expoConfig.version}`;
+    }
+
+    const dataResponse = await fetch(url);
     if (dataResponse.status === 204) {
       // hash shows latest data already loaded
       return null;
