@@ -64,7 +64,7 @@ const TopBanner = ({ stop }) => {
             paddingLeft: 24,
             paddingRight: 12,
           }}>
-          <Text style={{ width: '100%', float: 'left' }}>{stop?.stop_name || cached}</Text>
+          <Text style={{ width: '100%' }}>{stop?.stop_name || cached}</Text>
           <Menu
             visible={menuOpen}
             style={{ width: 250 }}
