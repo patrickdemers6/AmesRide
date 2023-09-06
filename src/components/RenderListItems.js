@@ -1,4 +1,4 @@
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native';
 import { List } from 'react-native-paper';
 
 const RenderListItems = ({ items }) => {
@@ -11,6 +11,7 @@ const RenderListItems = ({ items }) => {
           description={item.description}
           onLongPress={item.holdHandler}
           onPress={item.handler}
+          descriptionNumberOfLines={4}
         />
       ))}
     </ScrollView>

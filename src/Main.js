@@ -40,7 +40,7 @@ export default function Main() {
   return (
     <SafeAreaProvider>
       <StatusBar backgroundColor="white" barStyle="dark-content" />
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{ animation: 'fade' }}>
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
         <Stack.Group>
           <Stack.Screen name="Settings" component={Settings} />
