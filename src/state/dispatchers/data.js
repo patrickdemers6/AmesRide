@@ -35,8 +35,7 @@ export const fetchData =
  */
 const getPersistentData = async (hash) => {
   try {
-    // TODO: abstract urls to environment variable
-    let url = `https://amesride.demerstech.com/data?hash=${hash}&os=${Platform.OS}`;
+    let url = `${process.env.EXPO_PUBLIC_BACKEND_HOST}/data?hash=${hash}&os=${Platform.OS}`;
     if (Constants.expoConfig?.version) {
       url += `&version=${Constants.expoConfig.version}`;
     }

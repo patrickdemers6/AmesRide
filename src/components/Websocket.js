@@ -49,7 +49,7 @@ const Websocket = ({ children }) => {
           return existing;
         }
 
-        const socket = io('https://amesride.demerstech.com/');
+        const socket = io(process.env.EXPO_PUBLIC_BACKEND_HOST);
         socket.on('connect', () => {
           if (route?.route_id >= 0) subscribeRoute(socket);
           if (stop?.stop_id) subscribeStop(socket);
