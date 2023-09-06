@@ -49,6 +49,8 @@ const getPersistentData = async (hash) => {
     if (dataResponse.status === 200) {
       return dataResponse.json();
     }
+
+    throw new Error('something went wrong');
   } catch (e) {
     console.error('failed to get persistent data');
     console.error(e);

@@ -24,10 +24,11 @@ const Map = () => {
   const currentStop = useRecoilValue(currentStopState);
   const [screen, setScreen] = React.useState(Dimensions.get('window'));
 
-  // when user rotates screen, update dimensions of map
-  Dimensions.addEventListener('change', () => {
-    setScreen(Dimensions.get('window'));
-  });
+  React.useEffect(() => {
+    Dimensions.addEventListener('change', () => {
+      setScreen(Dimensions.get('window'));
+    });
+  }, []);
 
   const mapRef = useRef(null);
 
