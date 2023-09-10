@@ -15,6 +15,8 @@ const Websocket = ({ children }) => {
   const appState = React.useRef(AppState.currentState);
 
   React.useEffect(() => {
+    if (!websocket) return;
+
     console.log('websocket changed');
     const subscription = AppState.addEventListener('change', (nextAppState) => {
       if (

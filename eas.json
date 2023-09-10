@@ -14,11 +14,17 @@
       "channel": "beta",
       "android": {
         "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_BACKEND_HOST": "https://amesride.demerstech.com"
       }
     },
     "production": {
       "channel": "production",
-      "autoIncrement": true
+      "autoIncrement": true,
+      "env": {
+        "EXPO_PUBLIC_BACKEND_HOST": "https://amesride.demerstech.com"
+      }
     }
   },
   "submit": {
