@@ -1,8 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Button, Menu, Text } from 'react-native-paper';
+import { IconButton, Menu, Text } from 'react-native-paper';
 import GestureRecognizer from 'react-native-swipe-gestures';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useRecoilValue } from 'recoil';
 
 import { dispatcherState, userSettingsState } from '../../../state/atoms';
@@ -69,9 +68,13 @@ const TopBanner = ({ stop }) => {
             visible={menuOpen}
             style={{ width: 250 }}
             anchor={
-              <Button compact onPress={openMenu} color="black" style={{ margin: 0, padding: 0 }}>
-                <Icon name="dots-vertical" onPress={openMenu} size={20} style={{ margin: 0 }} />
-              </Button>
+              <IconButton
+                icon="dots-vertical"
+                compact
+                onPress={openMenu}
+                color="black"
+                style={{ margin: 0, padding: 0 }}
+              />
             }
             onDismiss={closeMenu}>
             <Menu.Item

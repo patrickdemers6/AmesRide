@@ -8,7 +8,6 @@ import { useRecoilValue } from 'recoil';
 import { dispatcherState } from '../state/atoms';
 import Map from './Map/Map';
 import RouteSelect from './RouteSelect';
-import SettingsFAB from './Settings/FAB';
 import StopInfo from './StopInfo/StopInfo';
 import Websocket from './Websocket';
 
@@ -16,10 +15,9 @@ const styles = StyleSheet.create({
   page: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
     width: '100%',
     height: '100%',
-    paddingTop: 36,
   },
   container: {
     height: '100%',
@@ -47,22 +45,19 @@ const Home = () => {
       dispatcher?.fetchFavorites();
       dispatcher?.fetchUserSettings();
     })();
-  }, []);
+  }, [dispatcher]);
 
   return (
     <>
-      <Websocket>
-        <Portal.Host>
+      <Portal.Host>
+        <Websocket>
           <View style={styles.page}>
             <RouteSelect />
-            <View style={styles.container}>
-              <Map />
-              <StopInfo />
-            </View>
+            <Map />
+            <StopInfo />
           </View>
-          <SettingsFAB />
-        </Portal.Host>
-      </Websocket>
+        </Websocket>
+      </Portal.Host>
     </>
   );
 };

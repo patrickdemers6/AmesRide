@@ -16,9 +16,8 @@ const ProgressBar = (props) => {
 };
 
 const LoadingIndicator = ({ loading }) => {
-  if (loading) return <ProgressBar indeterminate indeterminateAnimationDuration={1000} />;
-
-  return <ProgressBar progress={0} />;
+  if (!loading) return null;
+  return <ProgressBar indeterminate indeterminateAnimationDuration={1000} />;
 };
 
 export default LoadingIndicator;

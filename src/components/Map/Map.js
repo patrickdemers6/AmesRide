@@ -1,11 +1,13 @@
+import * as Location from 'expo-location';
 import React, { useRef } from 'react';
 import { View, Dimensions } from 'react-native';
 import MapView from 'react-native-maps';
 import { useRecoilValue } from 'recoil';
 
 import isInServiceBoundary from '../../data/serviceBoundaries';
-import { currentStopState, dispatcherState, userLocationState } from '../../state/atoms';
+import { currentStopState, dispatcherState } from '../../state/atoms';
 import { currentRoute } from '../../state/selectors';
+import MoveToLocation from './components/MoveToLocation';
 import RouteLine from './components/RouteLine';
 import Stops from './components/Stops';
 import Vehicles from './components/Vehicles';
@@ -19,7 +21,7 @@ const isuCampusRegion = {
 
 const Map = () => {
   const route = useRecoilValue(currentRoute);
-  const location = useRecoilValue(userLocationState);
+  const [locationStatus, locationRequestPermission] = Location.useForegroundPermissions();
   const dispatcher = useRecoilValue(dispatcherState);
   const currentStop = useRecoilValue(currentStopState);
   const [screen, setScreen] = React.useState(Dimensions.get('window'));
@@ -36,22 +38,39 @@ const Map = () => {
     if (currentStop) dispatcher?.clearCurrentStop();
   };
 
-  const moveMapToUser = () => {
-    if (!location) return;
+  const moveMapToUser = (force) => {
+    if (!locationStatus?.granted) return;
 
-    const { latitude, longitude } = location.coords;
+    (async () => {
+      const location = await Location.getLastKnownPositionAsync().catch(console.error);
 
-    if (isInServiceBoundary(latitude, longitude)) {
-      mapRef.current.animateToRegion({
-        latitude,
-        longitude,
-        longitudeDelta: 0.01,
-        latitudeDelta: 0.01,
-      });
-    }
+      if (!location) return;
+
+      const { latitude, longitude } = location.coords;
+
+      if (force || isInServiceBoundary(latitude, longitude)) {
+        mapRef.current.animateToRegion(
+          {
+            latitude,
+            longitude,
+            longitudeDelta: 0.01,
+            latitudeDelta: 0.01,
+          },
+          300
+        );
+      }
+    })();
   };
+  React.useEffect(moveMapToUser, [locationStatus?.granted]);
 
-  React.useEffect(moveMapToUser, [location]);
+  React.useEffect(() => {
+    if (!locationStatus) return;
+
+    const { granted, canAskAgain } = locationStatus;
+    if (!granted && canAskAgain) {
+      locationRequestPermission().catch(console.error);
+    }
+  }, [locationStatus]);
 
   return (
     <View style={{ width: screen.width, height: screen.height }}>
@@ -60,6 +79,7 @@ const Map = () => {
         initialRegion={isuCampusRegion}
         showsUserLocation
         onPress={handleMapPress}
+        showsMyLocationButton={false}
         moveOnMarkerPress={false}
         ref={mapRef}
         showsCompass={false}
@@ -72,6 +92,7 @@ const Map = () => {
         <Stops />
         <Vehicles />
       </MapView>
+      <MoveToLocation onPress={() => moveMapToUser(true)} show={locationStatus?.granted} />
     </View>
   );
 };
