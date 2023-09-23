@@ -44,6 +44,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
+    "cross-env": "^7.0.3",
     "eslint": "^8.24.0",
     "eslint-config-universe": "^11.1.0",
     "husky": "^8.0.1",
