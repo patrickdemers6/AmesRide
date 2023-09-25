@@ -185,24 +185,23 @@ export const currentTripSelector = selector({
 });
 
 const sortRoutes = (a, b) => {
-  // routes with short_name "A" should come last
-  if (a.route_short_name === 'A') {
-    if (b.route_short_name === 'A') {
-      return a.route_short_name.includes('West') || a.route_short_name.includes('South');
-    }
+  const regex = /^[0-9]+/;
+  const aIsNumber = regex.test(a.route_short_name);
+  const bIsNumber = regex.test(b.route_short_name);
+  if (aIsNumber && !bIsNumber) return -1;
+  if (!aIsNumber && bIsNumber) return 1;
+  if (!aIsNumber && !bIsNumber) {
+    return a.route_long_name < b.route_long_name ? -1 : 1;
   }
-  const difference =
-    Number.parseInt(a.route_short_name, 10) - Number.parseInt(b.route_short_name, 10);
 
-  if (difference !== 0) return difference;
+  const aNum = Number.parseInt(a.route_short_name, 10);
+  const bNum = Number.parseInt(b.route_short_name, 10);
 
-  const directions = ['North', 'East', 'South', 'West'];
-  const aDir = directions.some((dir) => a.route_long_name.endsWith(dir));
-  const bDir = directions.some((dir) => b.route_long_name.endsWith(dir));
-  if (aDir && bDir)
-    return a.route_long_name.includes('West') || a.route_long_name.includes('South');
+  if (aNum > bNum) return 1;
+  if (aNum < bNum) return -1;
 
-  return bDir;
+  if (['North', 'East'].some((dir) => a.route_long_name.includes(dir))) return -1;
+  return 1;
 };
 
 /**

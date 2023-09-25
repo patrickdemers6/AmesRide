@@ -33,11 +33,6 @@ export const upcomingArrivalsState = atom({
   default: null,
 });
 
-export const userLocationState = atom({
-  key: 'userLocationState',
-  default: null,
-});
-
 export const favoriteRoutesState = atom({
   key: 'favoriteRoutesState',
   default: new Set(),

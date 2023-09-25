@@ -2,8 +2,6 @@ import { useNavigation } from '@react-navigation/native';
 import { Linking } from 'react-native';
 
 import RenderListItems from './components/RenderListItems';
-import SettingsAbout from './components/Settings/SettingsAbout';
-import Stack from './components/Stack';
 
 const Settings = () => {
   const navigator = useNavigation();

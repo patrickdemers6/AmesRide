@@ -21,6 +21,18 @@ export const addFavorite =
     });
   };
 
+export const toggleFavoriteRoute =
+  ({ set }) =>
+  async (id) => {
+    set(favoriteRoutesState, (current) => {
+      const updated = new Set(current);
+      if (updated.has(id)) updated.delete(id);
+      else updated.add(id);
+
+      return updated;
+    });
+  };
+
 export const fetchFavorites =
   ({ set }) =>
   async () => {
