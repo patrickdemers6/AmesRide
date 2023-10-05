@@ -17,10 +17,10 @@ export const setData =
 export const fetchData =
   ({ set }) =>
   async () => {
-    const dataHash = await getFromLocalStorage('dataHashState');
     const data = await getFromLocalStorage('dataState');
-    set(dataHashState, dataHash || 'NONE');
     if (data) set(dataState, data);
+    const dataHash = await getFromLocalStorage('dataHashState');
+    set(dataHashState, dataHash || 'NONE');
 
     const updatedDataState = await getPersistentData(dataHash);
     if (updatedDataState) {
