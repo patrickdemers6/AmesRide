@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 
-import { FAVORITE_ROUTES } from './constants';
+import { FAVORITE_STOPS } from './constants';
 import { localForageEffectSet, localForageEffect } from './utilities/localforage/updateEffects';
 
 export const vehicleLocationState = atom({
@@ -15,7 +15,7 @@ export const vehicleLocationWaitingState = atom({
 
 export const currentRouteRowState = atom({
   key: 'currentRouteRowState',
-  default: FAVORITE_ROUTES,
+  default: FAVORITE_STOPS,
 });
 
 export const dispatcherState = atom({

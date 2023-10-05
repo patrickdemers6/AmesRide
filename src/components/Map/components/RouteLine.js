@@ -3,7 +3,7 @@ import { Polyline } from 'react-native-maps';
 import { useRecoilValue } from 'recoil';
 
 import { dataState } from '../../../state/atoms';
-import { ALL_ROUTES, FAVORITE_ROUTES } from '../../../state/constants';
+import { ALL_ROUTES, FAVORITE_STOPS } from '../../../state/constants';
 import { currentRouteShapeSelector } from '../../../state/selectors';
 
 const RouteLine = ({ route }) => {
@@ -13,7 +13,7 @@ const RouteLine = ({ route }) => {
 
   if (!data || !data.routes || !data.shapes || !data.trips) return;
 
-  if (route.route_id === FAVORITE_ROUTES) return null;
+  if (route.route_id === FAVORITE_STOPS) return null;
 
   if (route.route_id === ALL_ROUTES) {
     const seenRouteWaypoints = new Set();

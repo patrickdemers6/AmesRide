@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useRecoilValue } from 'recoil';
 
 import { currentRouteRowState, dispatcherState, loadingVehiclesState } from '../state/atoms';
-import { ALL_ROUTES, FAVORITE_ROUTES } from '../state/constants';
+import { ALL_ROUTES, FAVORITE_STOPS } from '../state/constants';
 import {
   currentRoute,
   favoriteRoutesOnlyState,
@@ -53,7 +53,7 @@ const RouteSelect = () => {
 
   let name = currentRouteInfo.route_long_name;
   let circleContent = currentRouteInfo.route_long_name?.split(' ')[0];
-  if (currentRouteInfo.route_id === FAVORITE_ROUTES) {
+  if (currentRouteInfo.route_id === FAVORITE_STOPS) {
     name = 'Favorite stops';
     circleContent = <Icon name="star" size={20} />;
   } else if (currentRouteInfo.route_id === ALL_ROUTES) {
@@ -64,6 +64,33 @@ const RouteSelect = () => {
   } else {
     name = name?.substring(circleContent.length);
   }
+
+  const items = [
+    ...routesQuickSelect,
+    ...stops,
+    {
+      name: 'All Routes',
+      icon: 'routes',
+      onPress: handleSelect,
+      id: ALL_ROUTES,
+    },
+  ];
+  const favoriteStopsItem = {
+    icon: 'star',
+    name: 'Stops',
+    onPress: handleSelect,
+    id: FAVORITE_STOPS,
+  };
+  if (favoriteStops && favoriteStops.length > 0) {
+    items.push(favoriteStopsItem);
+  }
+
+  React.useEffect(() => {
+    const favoriteStopsIsSelected = activeRoute === FAVORITE_STOPS;
+    if (favoriteStops?.length === 0 && favoriteStopsIsSelected) {
+      dispatcher.updateCurrentRoute(ALL_ROUTES);
+    }
+  }, [favoriteStops]);
 
   return (
     <>
@@ -86,20 +113,7 @@ const RouteSelect = () => {
           onIconRight={() => navigation.navigate('Settings')}
         />
         <View>
-          <QuickSelect
-            items={[
-              ...routesQuickSelect,
-              ...stops,
-              { name: 'All Routes', icon: 'routes', onPress: handleSelect, id: ALL_ROUTES },
-              {
-                icon: 'star',
-                name: 'Stops',
-                onPress: handleSelect,
-                id: FAVORITE_ROUTES,
-              },
-            ]}
-            style={{ paddingVertical: 4 }}
-          />
+          <QuickSelect items={items} style={{ paddingVertical: 4 }} />
         </View>
       </Portal>
     </>
