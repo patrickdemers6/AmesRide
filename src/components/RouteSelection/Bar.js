@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import { Pressable, View } from 'react-native';
 import { IconButton, Text } from 'react-native-paper';
 
+import { TOP_BAR_MAX_WIDTH } from '../../data/constants';
+
 const Bar = ({
   title,
   onPress,
@@ -17,7 +19,14 @@ const Bar = ({
 
   return (
     <View style={{ marginHorizontal: '5%', flexDirection: 'column' }}>
-      <View style={{ width: '100%', marginTop: 8, height: 50, maxWidth: 500, alignSelf: 'center' }}>
+      <View
+        style={{
+          width: '100%',
+          marginTop: 8,
+          height: 50,
+          maxWidth: TOP_BAR_MAX_WIDTH,
+          alignSelf: 'center',
+        }}>
         <Pressable onPress={onPress}>
           <View
             style={{
