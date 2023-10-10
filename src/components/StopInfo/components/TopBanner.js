@@ -73,7 +73,7 @@ const TopBanner = ({ stop }) => {
                 compact
                 onPress={openMenu}
                 color="black"
-                style={{ margin: 0, padding: 0 }}
+                style={{ margin: 0, padding: 0, backgroundColor: '#F1BE48' }}
               />
             }
             onDismiss={closeMenu}>

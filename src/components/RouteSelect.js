@@ -1,10 +1,15 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { View } from 'react-native';
+import { StatusBar, View } from 'react-native';
 import { Portal } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useRecoilValue } from 'recoil';
 
+import ColorCircle from './ColorCircle';
+import LoadingIndicator from './LoadingIndicator';
+import Bar from './RouteSelection/Bar';
+import QuickSelect from './RouteSelection/QuickSelect';
 import { currentRouteRowState, dispatcherState, loadingVehiclesState } from '../state/atoms';
 import { ALL_ROUTES, FAVORITE_STOPS } from '../state/constants';
 import {
@@ -12,10 +17,6 @@ import {
   favoriteRoutesOnlyState,
   favoriteStopDetailsState,
 } from '../state/selectors';
-import ColorCircle from './ColorCircle';
-import LoadingIndicator from './LoadingIndicator';
-import Bar from './RouteSelection/Bar';
-import QuickSelect from './RouteSelection/QuickSelect';
 
 const RouteSelect = () => {
   const dispatcher = useRecoilValue(dispatcherState);
@@ -98,23 +99,25 @@ const RouteSelect = () => {
         <LoadingIndicator loading={loading} />
       </Portal>
       <Portal>
-        <Bar
-          onPress={() => navigation.navigate('SelectRoute')}
-          title={name}
-          left={
-            <ColorCircle
-              color={`#${currentRouteInfo.route_color ?? 'FFF'}`}
-              size={45}
-              style={{ borderWidth: 2, borderColor: 'white', marginLeft: 2.5, marginRight: 5 }}
-              text={circleContent}
-            />
-          }
-          iconRight="cog"
-          onIconRight={() => navigation.navigate('Settings')}
-        />
-        <View>
-          <QuickSelect items={items} style={{ paddingVertical: 4 }} />
-        </View>
+        <SafeAreaView>
+          <Bar
+            onPress={() => navigation.navigate('SelectRoute')}
+            title={name}
+            left={
+              <ColorCircle
+                color={`#${currentRouteInfo.route_color ?? 'FFF'}`}
+                size={45}
+                style={{ borderWidth: 2, borderColor: 'white', marginLeft: 2.5, marginRight: 5 }}
+                text={circleContent}
+              />
+            }
+            iconRight="cog"
+            onIconRight={() => navigation.navigate('Settings')}
+          />
+          <View>
+            <QuickSelect items={items} style={{ paddingVertical: 4 }} />
+          </View>
+        </SafeAreaView>
       </Portal>
     </>
   );
