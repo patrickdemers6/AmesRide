@@ -6,8 +6,6 @@ With ratings on the Play Store of 1.9 stars and 2.3 stars, the existing solution
 
 **Ames Ride** strives to be a reliable, modern application that informs riders of current bus locations and arrival times.
 
-# Download
-
 The app is available on the [Apple App Store](https://apps.apple.com/us/app/ames-ride/id1666007719), [Google Play Store](https://play.google.com/store/apps/details?id=com.demerstech.amesride), or as an APK in the [releases](https://github.com/patrickdemers6/AmesRide/releases) section.
 
 <a href="https://apps.apple.com/us/app/ames-ride/id1666007719?itsct=apps_box_badge&amp;itscg=30200" style="overflow: hidden; border-radius: 13px; width: 200px; height: 83px;" target="_blank"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1674345600" alt="Download on the App Store" style="border-radius: 13px; width: 200px; height: 83px;"></a>
@@ -29,20 +27,20 @@ Switching routes is a simple tap away!
 <table>
     <tr>
         <td>
-            <h4>View upcoming arrivals for <strong>all</strong> routes at a stop</h4>
-            <img alt="Upcoming Stops" src="assets/screenshots/upcoming_arrivals.jpeg" width="300" />
+            <h4>View all routes/stops</h4>
+            <img alt="View all routes/stops" src="assets/screenshots/android/all_routes_and_stops.jpg" width="300" />
         </td>
         <td>
-            <h4>View upcoming arrivals for <strong>favorite</strong> routes at a stop</h4>
-            <img alt="Upcoming Stops" src="assets/screenshots/upcoming_arrivals_favorite.jpeg" width="300" />
+            <h4>View upcoming arrivals at a stop</h4>
+            <img alt="View a route" src="assets/screenshots/android/route.jpg" width="300" />
         </td>
         <td>
-            <h4>Mark your Favorite Stops</h4>
-            <img alt="Favorite Routes" src="assets/screenshots/favorite_stops.jpeg" width="300" />
+            <h4>Select a route</h4>
+            <img alt="Select a route" src="assets/screenshots/android/routes_list.jpg" width="300" />
         </td>
         <td>
             <h4>Mark your Favorite Routes</h4>
-            <img alt="Favorite Routes" src="assets/screenshots/favorite_routes.jpeg" width="300" />
+            <img alt="Select favorite routes" src="assets/screenshots/android/favorites_list.jpg" width="300" />
         </td>
     </tr>
 </table>
