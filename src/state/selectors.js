@@ -227,3 +227,11 @@ export const isWaitingForVehicleDataSelector = selector({
     return vehicles === null;
   },
 });
+
+export const isDataEmpty = selector({
+  key: 'isDataEmptySelector',
+  get: ({ get }) => {
+    const data = get(dataState);
+    return data.routes === null;
+  },
+});
