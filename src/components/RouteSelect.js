@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { StatusBar, View } from 'react-native';
+import { View } from 'react-native';
 import { Portal } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -16,6 +16,7 @@ import {
   currentRoute,
   favoriteRoutesOnlyState,
   favoriteStopDetailsState,
+  isDataEmpty,
 } from '../state/selectors';
 
 const RouteSelect = () => {
@@ -26,6 +27,7 @@ const RouteSelect = () => {
   const currentRouteInfo = useRecoilValue(currentRoute);
   const navigation = useNavigation();
   const loading = useRecoilValue(loadingVehiclesState);
+  const dataEmpty = useRecoilValue(isDataEmpty);
 
   const handleSelect = (index) => {
     if (index === activeRoute) {
@@ -54,7 +56,10 @@ const RouteSelect = () => {
 
   let name = currentRouteInfo.route_long_name;
   let circleContent = currentRouteInfo.route_long_name?.split(' ')[0];
-  if (currentRouteInfo.route_id === FAVORITE_STOPS) {
+  if (dataEmpty) {
+    name = 'Loading';
+    circleContent = <Icon name="sync" size={20} />;
+  } else if (currentRouteInfo.route_id === FAVORITE_STOPS) {
     name = 'Favorite stops';
     circleContent = <Icon name="star" size={20} />;
   } else if (currentRouteInfo.route_id === ALL_ROUTES) {
