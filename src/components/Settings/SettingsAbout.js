@@ -33,7 +33,7 @@ const SettingsAbout = () => {
       description: "Found a bug or have a suggestion? Let's chat!",
       handler: () =>
         Linking.openURL(
-          `mailto:patrickdemers6@gmail.com?subject=Ames%20Ride&body=Version: ${versionNumber}\n\n`
+          `mailto:patrickdemers6@gmail.com?subject=Ames Ride&body=Version: ${versionNumber}\n\n`
         ),
     },
     {
