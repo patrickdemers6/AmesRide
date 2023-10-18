@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
+import { SafeAreaView } from 'react-native';
 import { IconButton, Menu } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRecoilValue } from 'recoil';
 
 import Bar from './RouteSelection/Bar';
@@ -25,7 +25,7 @@ const SelectRouteScreen = () => {
 
   return (
     <>
-      <SafeAreaView>
+      <SafeAreaView style={{ flex: 1 }}>
         <Bar
           iconLeft="arrow-left"
           onIconLeft={navigation.goBack}
