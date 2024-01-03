@@ -45,6 +45,14 @@ Switching routes is a simple tap away!
     </tr>
 </table>
 
+
+# Demo
+
+Here is a video by Iowa State University showcasing the app.
+
+https://github.com/patrickdemers6/AmesRide/assets/12687723/93903e73-67aa-4dee-8d35-ec4490294a21
+
+
 # Permissions
 
 - Location: Ames Ride requests location permissions to locate the user on the map. This permission is not required.
