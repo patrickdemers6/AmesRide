@@ -4,7 +4,7 @@ import { useRecoilValue } from 'recoil';
 
 import { currentStopState } from '../../../state/atoms';
 
-const MoveToLocation = ({ onPress, show }) => {
+const MoveToLocation = ({ onPress, show, dark }) => {
   const selectedStop = useRecoilValue(currentStopState);
 
   return (
@@ -18,7 +18,7 @@ const MoveToLocation = ({ onPress, show }) => {
           bottom: 0,
           right: 0,
           margin: 16,
-          backgroundColor: 'white',
+          backgroundColor: dark ? '#0f0f0f' : 'white',
         }}
         icon="crosshairs-gps"
       />

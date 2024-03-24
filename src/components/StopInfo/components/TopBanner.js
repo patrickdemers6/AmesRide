@@ -5,12 +5,13 @@ import GestureRecognizer from 'react-native-swipe-gestures';
 import { useRecoilValue } from 'recoil';
 
 import { dispatcherState, userSettingsState } from '../../../state/atoms';
-import { isCurrentStopFavorite } from '../../../state/selectors';
+import { isCurrentStopFavorite, themeSelector } from '../../../state/selectors';
 
 const TopBanner = ({ stop }) => {
   const dispatcher = useRecoilValue(dispatcherState);
   const currentStopFavorite = useRecoilValue(isCurrentStopFavorite);
   const settings = useRecoilValue(userSettingsState);
+  const theme = useRecoilValue(themeSelector);
 
   const [menuOpen, setMenuOpen] = React.useState(false);
 
@@ -49,7 +50,7 @@ const TopBanner = ({ stop }) => {
     <GestureRecognizer onSwipeDown={dispatcher?.clearCurrentStop} style={{ width: '100%' }}>
       <View
         style={{
-          backgroundColor: '#F1BE48',
+          backgroundColor: theme.colors.backgroundVariant,
           width: '100%',
           padding: 12,
           borderTopLeftRadius: 8,
@@ -73,7 +74,7 @@ const TopBanner = ({ stop }) => {
                 compact
                 onPress={openMenu}
                 color="black"
-                style={{ margin: 0, padding: 0, backgroundColor: '#F1BE48' }}
+                style={{ margin: 0, padding: 0 }}
               />
             }
             onDismiss={closeMenu}>

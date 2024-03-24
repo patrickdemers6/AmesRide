@@ -1,11 +1,11 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 
+import ImagePin from './ImagePin';
 import { dispatcherState, favoriteStopsState } from '../../../state/atoms';
 import { stopsInCurrentTripSelector, favoriteStopDetailsState } from '../../../state/selectors';
 import FavoriteStopImage from '../../icons/FavoriteStopImage';
 import RegularStopImage from '../../icons/RegularStopImage';
-import ImagePin from './ImagePin';
 
 /**
  * Renders all stops on the map for the given trip.
