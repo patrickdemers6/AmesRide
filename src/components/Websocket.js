@@ -17,7 +17,6 @@ const Websocket = ({ children }) => {
   React.useEffect(() => {
     if (!websocket) return;
 
-    console.log('websocket changed');
     const subscription = AppState.addEventListener('change', (nextAppState) => {
       if (
         appState.current.match(/inactive|background/) &&

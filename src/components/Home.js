@@ -1,11 +1,7 @@
-import { driverWithoutSerialization } from '@aveq-research/localforage-asyncstorage-driver';
-import localforage from 'localforage';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Portal } from 'react-native-paper';
-import { useRecoilValue } from 'recoil';
 
-import { dispatcherState } from '../state/atoms';
 import Map from './Map/Map';
 import RouteSelect from './RouteSelect';
 import StopInfo from './StopInfo/StopInfo';
@@ -24,29 +20,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
 });
-
-const setup = async () => {
-  const driver = driverWithoutSerialization();
-  await localforage.defineDriver(driver);
-  await localforage.setDriver(driver._driver);
-};
-
 const Home = () => {
-  const dispatcher = useRecoilValue(dispatcherState);
-  const [updatedOnce, setUpdatedOnce] = React.useState(false);
-
-  React.useEffect(() => {
-    (async () => {
-      if (!dispatcher || updatedOnce) return;
-      setUpdatedOnce(true);
-      await setup();
-      dispatcher?.fetchData();
-      dispatcher?.fetchFavoriteStops();
-      dispatcher?.fetchFavorites();
-      dispatcher?.fetchUserSettings();
-    })();
-  }, [dispatcher]);
-
   return (
     <>
       <Portal.Host>

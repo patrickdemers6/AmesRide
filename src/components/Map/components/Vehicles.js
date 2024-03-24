@@ -2,13 +2,13 @@ import React from 'react';
 import Toast from 'react-native-root-toast';
 import { useRecoilValue } from 'recoil';
 
+import VehicleView from './VehicleView';
 import {
   currentRouteRowState,
   vehicleLocationState,
   vehicleLocationWaitingState,
 } from '../../../state/atoms';
 import { isCustomRouteSelector, routeHasVehiclesSelector } from '../../../state/selectors';
-import VehicleView from './VehicleView';
 
 /**
  * Render all vehicles on the current route.

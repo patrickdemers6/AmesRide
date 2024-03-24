@@ -1,8 +1,11 @@
 import PropTypes from 'prop-types';
 import { Pressable, View } from 'react-native';
 import { IconButton, Text } from 'react-native-paper';
+import { useRecoilValue } from 'recoil';
 
 import { TOP_BAR_MAX_WIDTH } from '../../data/constants';
+import { themeSelector } from '../../state/selectors';
+import ThemedView from '../ThemedView';
 
 const Bar = ({
   title,
@@ -14,6 +17,7 @@ const Bar = ({
   iconRight,
   onIconRight = () => {},
 }) => {
+  const theme = useRecoilValue(themeSelector);
   const Left = left ?? <IconButton icon={iconLeft} onPress={onIconLeft} /> ?? null;
   const Right = right ?? <IconButton icon={iconRight} onPress={onIconRight} /> ?? null;
 
@@ -28,39 +32,32 @@ const Bar = ({
           alignSelf: 'center',
         }}>
         <Pressable onPress={onPress}>
-          <View
+          <ThemedView
             style={{
               borderRadius: 25,
-              backgroundColor: 'white',
+              borderWidth: 1,
+              borderColor: theme.colors.outline,
+              width: '100%',
+              height: '100%',
             }}>
             <View
               style={{
-                backgroundColor: 'white',
-                borderRadius: 25,
-                borderColor: 'lightgrey',
-                borderWidth: 1,
-                width: '100%',
-                height: '100%',
+                height: 45,
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
               }}>
               <View
-                style={{
-                  height: 45,
-                  flex: 1,
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <View
-                  style={{ flex: 1, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                  {Left}
-                  <View style={{ marginLeft: 8 }}>
-                    <Text style={{ fontSize: 16 }}>{title}</Text>
-                  </View>
+                style={{ flex: 1, display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                {Left}
+                <View style={{ marginLeft: 8 }}>
+                  <Text style={{ fontSize: 16 }}>{title}</Text>
                 </View>
-                {Right}
               </View>
+              {Right}
             </View>
-          </View>
+          </ThemedView>
         </Pressable>
       </View>
     </View>

@@ -1,10 +1,13 @@
 import { ScrollView, useWindowDimensions } from 'react-native';
 import { Button } from 'react-native-paper';
+import { useRecoilValue } from 'recoil';
 
 import { TOP_BAR_MAX_WIDTH } from '../../data/constants';
+import { themeSelector } from '../../state/selectors';
 
 const QuickSelect = ({ items, style }) => {
   const { width } = useWindowDimensions();
+  const theme = useRecoilValue(themeSelector);
   const isFullWidth = width <= TOP_BAR_MAX_WIDTH;
   return (
     <ScrollView
@@ -25,8 +28,8 @@ const QuickSelect = ({ items, style }) => {
           key={name}
           onPress={() => onPress(id)}
           icon={icon}
-          buttonColor="white"
-          textColor="black"
+          buttonColor={theme.colors.background}
+          textColor={theme.colors.text}
           style={{
             margin: 3,
             marginLeft: i === 0 && isFullWidth ? width * 0.05 : 2,

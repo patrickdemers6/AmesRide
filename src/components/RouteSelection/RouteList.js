@@ -53,7 +53,7 @@ const RouteList = ({ editing, checked, onEditPress }) => {
               right={() =>
                 editing && (
                   <List.Icon
-                    color={theme.colors.backdrop}
+                    color={theme.colors.outline}
                     icon={
                       checked.has(route.route_id) ? 'checkbox-marked' : 'checkbox-blank-outline'
                     }

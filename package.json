@@ -1,6 +1,6 @@
 {
   "name": "ames-ride",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "license": "GNU3",
   "scripts": {
     "start": "cross-env NODE_ENV=development expo start",

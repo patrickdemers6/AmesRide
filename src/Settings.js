@@ -11,6 +11,7 @@ const Settings = () => {
   };
 
   const items = [
+    { title: 'Appearance', handler: () => openScreen('Settings/Appearance') },
     {
       title: 'Contact CyRide',
       description:

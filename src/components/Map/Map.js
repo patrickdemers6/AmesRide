@@ -4,13 +4,14 @@ import { View, Dimensions } from 'react-native';
 import MapView from 'react-native-maps';
 import { useRecoilValue } from 'recoil';
 
-import isInServiceBoundary from '../../data/serviceBoundaries';
-import { currentStopState, dispatcherState } from '../../state/atoms';
-import { currentRoute } from '../../state/selectors';
 import MoveToLocation from './components/MoveToLocation';
 import RouteLine from './components/RouteLine';
 import Stops from './components/Stops';
 import Vehicles from './components/Vehicles';
+import isInServiceBoundary from '../../data/serviceBoundaries';
+import { currentStopState, dispatcherState } from '../../state/atoms';
+import { currentRoute, isDarkMode as isDarkModeSelector } from '../../state/selectors';
+import { dark, light } from '../../styles/map';
 
 const isuCampusRegion = {
   latitude: 42.02663,
@@ -24,6 +25,7 @@ const Map = () => {
   const [locationStatus, locationRequestPermission] = Location.useForegroundPermissions();
   const dispatcher = useRecoilValue(dispatcherState);
   const currentStop = useRecoilValue(currentStopState);
+  const isDarkMode = useRecoilValue(isDarkModeSelector);
   const [screen, setScreen] = React.useState(Dimensions.get('window'));
 
   React.useEffect(() => {
@@ -82,6 +84,7 @@ const Map = () => {
         showsMyLocationButton={false}
         moveOnMarkerPress={false}
         ref={mapRef}
+        customMapStyle={isDarkMode ? dark : light}
         showsCompass={false}
         rotateEnabled={false}
         toolbarEnabled={false}
@@ -92,7 +95,11 @@ const Map = () => {
         <Stops />
         <Vehicles />
       </MapView>
-      <MoveToLocation onPress={() => moveMapToUser(true)} show={locationStatus?.granted} />
+      <MoveToLocation
+        dark={isDarkMode}
+        onPress={() => moveMapToUser(true)}
+        show={locationStatus?.granted}
+      />
     </View>
   );
 };

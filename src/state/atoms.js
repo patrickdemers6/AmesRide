@@ -49,6 +49,8 @@ export const userSettingsState = atom({
   key: 'userSettingsState',
   default: {
     showFavoriteArrivalsOnly: false,
+    theme: 'light',
+    initialized: false,
   },
   effects: [localForageEffect('userSettingsState')],
 });

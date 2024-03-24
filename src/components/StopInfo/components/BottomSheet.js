@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
     left: 0,
     position: 'absolute',
     zIndex: 100,
-    backgroundColor: 'white',
   },
 });
 
