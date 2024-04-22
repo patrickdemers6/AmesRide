@@ -1,8 +1,8 @@
 import { differenceInMinutes, format, parse } from 'date-fns';
 import React from 'react';
 import { View } from 'react-native';
-import { Text } from 'react-native-paper';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
+import { Text } from 'react-native-paper';
 import { useRecoilValue } from 'recoil';
 
 import {

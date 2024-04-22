@@ -7,9 +7,11 @@ import {
   favoriteRoutesState,
   favoriteStopsState,
   upcomingArrivalsState,
+  userSettingsState,
   vehicleLocationState,
 } from './atoms';
 import { ALL_ROUTES } from './constants';
+import { darkTheme, lightTheme } from '../styles/theme';
 
 /**
  * Get information about the current route.
@@ -233,5 +235,29 @@ export const isDataEmpty = selector({
   get: ({ get }) => {
     const data = get(dataState);
     return data.routes === null;
+  },
+});
+
+export const isDarkMode = selector({
+  key: 'isDarkModeSelector',
+  get: ({ get }) => {
+    const settings = get(userSettingsState);
+    return settings.theme === 'dark';
+  },
+});
+
+export const themeSelector = selector({
+  key: 'themeSelector',
+  get: ({ get }) => {
+    const settings = get(userSettingsState);
+    return settings.theme === 'dark' ? darkTheme : lightTheme;
+  },
+});
+
+export const userSettingsInitialized = selector({
+  key: 'userSettingsInitialized',
+  get: ({ get }) => {
+    const settings = get(userSettingsState);
+    return settings && settings.initialized;
   },
 });

@@ -11,7 +11,7 @@ import {
 import { setLoading } from './dispatchers/loading';
 import { updateCurrentRoute } from './dispatchers/routes';
 import { clearCurrentStop, setCurrentStop, setUpcomingArrivals } from './dispatchers/stops';
-import { fetchUserSettings, toggleUserSetting } from './dispatchers/userSettings';
+import { fetchUserSettings, toggleUserSetting, setUserSetting } from './dispatchers/userSettings';
 import { setVehicleLocations } from './dispatchers/vehicles';
 
 export const createDispatcher = () => {
@@ -27,6 +27,7 @@ export const createDispatcher = () => {
     setUpcomingArrivals,
     fetchUserSettings,
     toggleUserSetting,
+    setUserSetting,
     fetchFavoriteStops,
     toggleFavoriteStop,
     setLoading,

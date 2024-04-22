@@ -5,7 +5,9 @@ export const fetchUserSettings =
   ({ set }) =>
   async () => {
     const settings = await getFromLocalStorage('userSettingsState');
-    set(userSettingsState, (s) => (settings ? { ...s, ...settings } : s));
+    set(userSettingsState, (s) =>
+      settings ? { ...s, ...settings, initialized: true } : { ...s, initialized: true }
+    );
   };
 
 export const setUserSetting =

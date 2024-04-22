@@ -16,6 +16,7 @@ import {
   favoriteRoutesOnlyState,
   favoriteStopDetailsState,
   isDataEmpty,
+  themeSelector,
 } from '../state/selectors';
 
 const RouteSelect = () => {
@@ -25,6 +26,7 @@ const RouteSelect = () => {
   const activeRoute = useRecoilValue(currentRouteRowState);
   const currentRouteInfo = useRecoilValue(currentRoute);
   const navigation = useNavigation();
+  const theme = useRecoilValue(themeSelector);
   const loading = useRecoilValue(loadingVehiclesState);
   const dataEmpty = useRecoilValue(isDataEmpty);
 
@@ -109,9 +111,18 @@ const RouteSelect = () => {
             title={name}
             left={
               <ColorCircle
-                color={`#${currentRouteInfo.route_color ?? 'FFF'}`}
+                color={
+                  currentRouteInfo.route_color
+                    ? `#${currentRouteInfo.route_color}`
+                    : theme.colors.background
+                }
                 size={45}
-                style={{ borderWidth: 2, borderColor: 'white', marginLeft: 2.5, marginRight: 5 }}
+                style={{
+                  borderWidth: 2,
+                  borderColor: theme.colors.background,
+                  marginLeft: 2.5,
+                  marginRight: 5,
+                }}
                 text={circleContent}
               />
             }
