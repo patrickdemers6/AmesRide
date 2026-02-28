@@ -8,6 +8,7 @@ import Home from './components/Home';
 import SelectRouteScreen from './components/SelectRouteScreen';
 import SettingsAbout from './components/Settings/SettingsAbout';
 import SettingsAdvanced from './components/Settings/SettingsAdvanced';
+import SettingsBusNotifications from './components/Settings/SettingsBusNotifications';
 import Stack from './components/Stack';
 import { dispatcherState } from './state/atoms';
 import { createDispatcher } from './state/dispatcher';
@@ -41,6 +42,11 @@ export default function Main() {
             name="Settings/Advanced"
             component={SettingsAdvanced}
             options={{ title: 'Advanced' }}
+          />
+          <Stack.Screen
+            name="Settings/BusNotifications"
+            component={SettingsBusNotifications}
+            options={{ title: 'Bus Notifications' }}
           />
         </Stack.Group>
       </Stack.Navigator>
