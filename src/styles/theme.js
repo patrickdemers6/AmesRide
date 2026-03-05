@@ -5,7 +5,8 @@ const theme = {
   dark: false,
   roundness: 4,
   colors: {
-    primary: '#6200ee',
+    primary: '#C62828',
+    onPrimary: '#ffffff',
     accent: '#03dac4',
     background: '#f6f6f6',
     surface: '#ffffff',
