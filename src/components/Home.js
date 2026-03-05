@@ -5,11 +5,13 @@ import { StyleSheet, View } from 'react-native';
 import { Portal } from 'react-native-paper';
 import { useRecoilValue } from 'recoil';
 
-import { dispatcherState } from '../state/atoms';
 import Map from './Map/Map';
+import NotificationMonitor from './NotificationMonitor';
 import RouteSelect from './RouteSelect';
 import StopInfo from './StopInfo/StopInfo';
 import Websocket from './Websocket';
+import { setupNotifications } from '../services/notifications';
+import { dispatcherState } from '../state/atoms';
 
 const styles = StyleSheet.create({
   page: {
@@ -34,29 +36,34 @@ const setup = async () => {
 const Home = () => {
   const dispatcher = useRecoilValue(dispatcherState);
   const [updatedOnce, setUpdatedOnce] = React.useState(false);
+  const [storageReady, setStorageReady] = React.useState(false);
 
   React.useEffect(() => {
     (async () => {
       if (!dispatcher || updatedOnce) return;
       setUpdatedOnce(true);
       await setup();
+      setStorageReady(true);
       dispatcher?.fetchData();
       dispatcher?.fetchFavoriteStops();
       dispatcher?.fetchFavorites();
       dispatcher?.fetchUserSettings();
+      await setupNotifications();
     })();
   }, [dispatcher]);
 
   return (
     <>
       <Portal.Host>
-        <Websocket>
-          <View style={styles.page}>
-            <RouteSelect />
-            <Map />
-            <StopInfo />
-          </View>
-        </Websocket>
+        <NotificationMonitor storageReady={storageReady}>
+          <Websocket>
+            <View style={styles.page}>
+              <RouteSelect />
+              <Map />
+              <StopInfo />
+            </View>
+          </Websocket>
+        </NotificationMonitor>
       </Portal.Host>
     </>
   );

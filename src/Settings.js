@@ -12,6 +12,11 @@ const Settings = () => {
 
   const items = [
     {
+      title: 'Bus Notifications',
+      description: 'Get notified before your bus arrives at a stop',
+      handler: () => openScreen('Settings/BusNotifications'),
+    },
+    {
       title: 'Contact CyRide',
       description:
         'Contact CyRide for general questions or safety concerns. Please note, this app is not affiliated with CyRide.',

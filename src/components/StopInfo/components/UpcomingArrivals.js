@@ -1,11 +1,15 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { differenceInMinutes, format, parse } from 'date-fns';
 import React from 'react';
 import { View } from 'react-native';
-import { Text } from 'react-native-paper';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
+import { Text } from 'react-native-paper';
 import { useRecoilValue } from 'recoil';
 
+import QuickNotifyModal from './QuickNotifyModal';
+import { getPendingQuickNotify } from '../../../services/notifications';
 import {
+  currentStopState,
   dataState,
   dispatcherState,
   favoriteRoutesState,
@@ -17,12 +21,24 @@ import { upcomingArrivalsSorted } from '../../../state/selectors';
 const UpcomingArrivals = () => {
   const upcomingArrivals = useRecoilValue(upcomingArrivalsSorted);
   const data = useRecoilValue(dataState);
+  const currentStop = useRecoilValue(currentStopState);
   const dispatcher = useRecoilValue(dispatcherState);
   const loadingArrivals = useRecoilValue(loadingArrivalsState);
   const settings = useRecoilValue(userSettingsState);
   const favoriteRouteIDs = useRecoilValue(favoriteRoutesState);
 
-  if (!data) return;
+  const [quickNotifyArrival, setQuickNotifyArrival] = React.useState(null);
+  const [pendingNotifs, setPendingNotifs] = React.useState({});
+
+  const refreshPending = React.useCallback(() => {
+    getPendingQuickNotify().then(setPendingNotifs);
+  }, []);
+
+  React.useEffect(() => {
+    refreshPending();
+  }, [refreshPending]);
+
+  if (!data) return null;
 
   let renderArrivals = [];
   if (upcomingArrivals && !loadingArrivals) {
@@ -48,18 +64,25 @@ const UpcomingArrivals = () => {
         <Pressable
           key={arrival.trip_id}
           onPress={() => {
-            dispatcher?.updateCurrentRoute(r.route_id, false);
+            setQuickNotifyArrival({ arrival, route: r });
           }}>
           <View
             style={{
+              flexDirection: 'row',
+              alignItems: 'center',
               borderLeftColor: `#${r.route_color}` || 'inherit',
               borderLeftWidth: 10,
               marginVertical: 4,
             }}>
-            <Text style={{ paddingLeft: 4 }}>
+            <Text style={{ paddingLeft: 4, flex: 1 }}>
               {r.route_long_name} - {format(d, 'h:mm a')} (
               {diffMins > 1 ? diffMins + ' minutes' : diffMins === 1 ? '1 minute' : 'arriving'})
             </Text>
+            <MaterialCommunityIcons
+              name={pendingNotifs[arrival.trip_id] ? 'bell' : 'bell-outline'}
+              size={16}
+              color={pendingNotifs[arrival.trip_id] ? '#555' : '#aaa'}
+            />
           </View>
         </Pressable>
       );
@@ -80,6 +103,17 @@ const UpcomingArrivals = () => {
       ) : (
         <Text>No upcoming arrivals on favorited routes.</Text>
       )}
+
+      <QuickNotifyModal
+        visible={Boolean(quickNotifyArrival)}
+        onDismiss={() => {
+          setQuickNotifyArrival(null);
+          refreshPending();
+        }}
+        arrival={quickNotifyArrival?.arrival}
+        route={quickNotifyArrival?.route}
+        stop={currentStop}
+      />
     </>
   );
 };
