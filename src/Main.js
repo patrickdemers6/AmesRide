@@ -10,6 +10,7 @@ import SettingsAbout from './components/Settings/SettingsAbout';
 import SettingsAdvanced from './components/Settings/SettingsAdvanced';
 import SettingsBusNotifications from './components/Settings/SettingsBusNotifications';
 import Stack from './components/Stack';
+import { registerBackgroundNotificationTask } from './services/notifications';
 import { dispatcherState } from './state/atoms';
 import { createDispatcher } from './state/dispatcher';
 
@@ -19,6 +20,7 @@ export default function Main() {
 
   React.useEffect(() => {
     setDispatcher(dispatcherRef.current);
+    registerBackgroundNotificationTask();
   }, []);
 
   return (

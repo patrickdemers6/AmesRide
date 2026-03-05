@@ -58,7 +58,7 @@ const QuickNotifyModal = ({ visible, onDismiss, arrival, route, stop }) => {
     setScheduling(true);
     try {
       await cancelQuickNotify(arrival.trip_id);
-      setHasExisting(false);
+      onDismiss();
     } catch (e) {
       console.warn('Failed to cancel notification:', e);
     } finally {
@@ -121,10 +121,10 @@ const QuickNotifyModal = ({ visible, onDismiss, arrival, route, stop }) => {
                         A notification is already set for this bus.
                       </Text>
                       <Button
-                        mode="outlined"
+                        mode="text"
                         onPress={handleCancelExisting}
                         disabled={scheduling}
-                        style={styles.existingActionBtn}>
+                        textColor="#B00020">
                         Cancel notification
                       </Button>
                       <Button
@@ -274,9 +274,6 @@ const styles = StyleSheet.create({
   },
   existingMsg: {
     color: '#555',
-  },
-  existingActionBtn: {
-    marginTop: 4,
   },
 });
 

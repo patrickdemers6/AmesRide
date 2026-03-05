@@ -1,5 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as BackgroundFetch from 'expo-background-fetch';
 import * as Notifications from 'expo-notifications';
+import * as TaskManager from 'expo-task-manager';
 import { Platform } from 'react-native';
 
 import getFromLocalStorage from '../state/utilities/localforage/getFromLocalStorage';
@@ -10,7 +12,6 @@ const PENDING_QUICK_NOTIFY_KEY = 'amesride-pending-quick-notify';
 const SCHEDULED_NOTIFICATIONS_KEY = 'amesride-scheduled-notifications';
 const NOTIFIED_ARRIVALS_KEY = 'amesride-notified-arrivals';
 
-// Configure how notifications are handled when app is in foreground
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -43,15 +44,6 @@ export async function setupNotifications() {
   return finalStatus === 'granted';
 }
 
-/**
- * Schedule a one-time notification for X minutes before a specific arrival (Quick Notify)
- * @param {Object} params
- * @param {Object} params.arrival - arrival object with trip_id, arrival_time
- * @param {Object} params.route - route object with route_long_name
- * @param {Object} params.stop - stop object with stop_id, stop_name
- * @param {number} params.minutesBefore - minutes before arrival to notify
- * @returns {Promise<string|null>} notification ID or null
- */
 export async function scheduleQuickNotify({ arrival, route, stop, minutesBefore }) {
   const hasPermission = await setupNotifications();
   if (!hasPermission) return null;
@@ -117,9 +109,6 @@ export async function cancelQuickNotify(tripId) {
   }
 }
 
-/**
- * Cancel all scheduled notifications
- */
 export async function cancelAllNotifications() {
   await Notifications.cancelAllScheduledNotificationsAsync();
   await AsyncStorage.multiRemove([
@@ -128,8 +117,6 @@ export async function cancelAllNotifications() {
     NOTIFIED_ARRIVALS_KEY,
   ]);
 }
-
-// --- Recurring (Scheduled) Notifications ---
 
 /**
  * @typedef {Object} ScheduledNotification
@@ -146,24 +133,15 @@ export async function cancelAllNotifications() {
  * @property {number} minutesBefore
  */
 
-/**
- * Get all scheduled (recurring) notifications
- */
 export async function getScheduledNotifications() {
   const data = await AsyncStorage.getItem(SCHEDULED_NOTIFICATIONS_KEY);
   return data ? JSON.parse(data) : [];
 }
 
-/**
- * Save scheduled notifications
- */
 async function saveScheduledNotifications(list) {
   await AsyncStorage.setItem(SCHEDULED_NOTIFICATIONS_KEY, JSON.stringify(list));
 }
 
-/**
- * Add a scheduled notification
- */
 export async function addScheduledNotification(config) {
   const list = await getScheduledNotifications();
   const id = `sched-${Date.now()}-${Math.random().toString(36).slice(2)}`;
@@ -173,9 +151,6 @@ export async function addScheduledNotification(config) {
   return id;
 }
 
-/**
- * Update a scheduled notification
- */
 export async function updateScheduledNotification(id, updates) {
   const list = await getScheduledNotifications();
   const idx = list.findIndex((s) => s.id === id);
@@ -185,40 +160,26 @@ export async function updateScheduledNotification(id, updates) {
   }
 }
 
-/**
- * Delete a scheduled notification
- */
 export async function deleteScheduledNotification(id) {
   const list = await getScheduledNotifications();
   const filtered = list.filter((s) => s.id !== id);
   await saveScheduledNotifications(filtered);
 }
 
-/**
- * Check if we've already notified for this arrival (avoid duplicates)
- */
 async function hasNotifiedForArrival(stopId, tripId) {
   const data = await AsyncStorage.getItem(NOTIFIED_ARRIVALS_KEY);
   const set = data ? new Set(JSON.parse(data)) : new Set();
   return set.has(`${stopId}-${tripId}`);
 }
 
-/**
- * Mark arrival as notified
- */
 async function markArrivalNotified(stopId, tripId) {
   const data = await AsyncStorage.getItem(NOTIFIED_ARRIVALS_KEY);
   const arr = data ? JSON.parse(data) : [];
   arr.push(`${stopId}-${tripId}`);
-  // Keep last 100 to prevent unbounded growth
   if (arr.length > 100) arr.splice(0, arr.length - 50);
   await AsyncStorage.setItem(NOTIFIED_ARRIVALS_KEY, JSON.stringify(arr));
 }
 
-/**
- * Check arrivals for a stop and schedule notifications for matching recurring configs
- * Called when app is in foreground or from background task
- */
 export async function checkAndScheduleRecurringNotifications() {
   const hasPermission = await setupNotifications();
   if (!hasPermission) return;
@@ -285,5 +246,43 @@ export async function checkAndScheduleRecurringNotifications() {
     } catch (e) {
       console.warn('Error checking arrivals for notification:', e);
     }
+  }
+}
+
+const BG_TASK_NAME = 'bg-bus-notification-check';
+
+TaskManager.defineTask(BG_TASK_NAME, async () => {
+  try {
+    await checkAndScheduleRecurringNotifications();
+    return BackgroundFetch.BackgroundFetchResult.NewData;
+  } catch (e) {
+    console.warn('Background notification task failed:', e);
+    return BackgroundFetch.BackgroundFetchResult.Failed;
+  }
+});
+
+export async function registerBackgroundNotificationTask() {
+  try {
+    const already = await TaskManager.isTaskRegisteredAsync(BG_TASK_NAME);
+    if (!already) {
+      await BackgroundFetch.registerTaskAsync(BG_TASK_NAME, {
+        minimumInterval: 60 * 15,
+        stopOnTerminate: false,
+        startOnBoot: true,
+      });
+    }
+  } catch (e) {
+    console.warn('Failed to register background notification task:', e);
+  }
+}
+
+export async function unregisterBackgroundNotificationTask() {
+  try {
+    const registered = await TaskManager.isTaskRegisteredAsync(BG_TASK_NAME);
+    if (registered) {
+      await BackgroundFetch.unregisterTaskAsync(BG_TASK_NAME);
+    }
+  } catch (e) {
+    console.warn('Failed to unregister background notification task:', e);
   }
 }
