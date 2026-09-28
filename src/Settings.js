@@ -1,13 +1,10 @@
-import { useNavigation } from '@react-navigation/native';
 import { Linking } from 'react-native';
 
 import RenderListItems from './components/RenderListItems';
 
-const Settings = () => {
-  const navigator = useNavigation();
-
+const Settings = ({ onNavigate }) => {
   const openScreen = (screenName) => {
-    navigator.push(screenName);
+    onNavigate(screenName);
   };
 
   const items = [

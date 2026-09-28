@@ -2,7 +2,7 @@ module.exports = {
   expo: {
     name: 'Ames Ride',
     slug: 'AmesRide',
-    version: '1.3.0',
+    version: '1.3.1',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
@@ -39,13 +39,30 @@ module.exports = {
     web: {
       favicon: './assets/favicon.png',
     },
-    runtimeVersion: {
-      policy: 'sdkVersion',
-    },
+    // A string is required once the android project exists. `appVersion` policy
+    // is rejected by Expo CLI in that workflow, which blocks the dev server.
+    runtimeVersion: '1.3.1',
     extra: {
       eas: {
         projectId: '66ed03a0-a25d-4e73-ba27-973d8ff7a2ae',
       },
     },
+    plugins: [
+      'expo-splash-screen',
+      'expo-location',
+      'expo-asset',
+      './plugins/withAndroid37Platform',
+      './plugins/withVectorIconFont',
+      [
+        'expo-build-properties',
+        {
+          android: {
+            compileSdkVersion: 37,
+            targetSdkVersion: 37,
+            buildToolsVersion: '37.0.0',
+          },
+        },
+      ],
+    ],
   },
 };

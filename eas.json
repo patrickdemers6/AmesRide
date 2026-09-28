@@ -7,7 +7,8 @@
   "build": {
     "development": {
       "developmentClient": false,
-      "distribution": "internal"
+      "distribution": "internal",
+      "node": "24.14.0"
     },
     "beta": {
       "distribution": "internal",
@@ -16,18 +17,26 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_BACKEND_HOST": "https://amesride.demerstech.com"
-      }
+        "EXPO_PUBLIC_BACKEND_HOST": "https://amesride.demerstech.com",
+        "EAS_USE_PRECOMPILED_MODULES": "0"
+      },
+      "node": "24.14.0"
     },
     "production": {
       "channel": "production",
       "autoIncrement": true,
       "env": {
-        "EXPO_PUBLIC_BACKEND_HOST": "https://amesride.demerstech.com"
-      }
+        "EXPO_PUBLIC_BACKEND_HOST": "https://amesride.demerstech.com",
+        "EAS_USE_PRECOMPILED_MODULES": "0"
+      },
+      "node": "24.14.0"
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "ascAppId": "1666007719"
+      }
+    }
   }
 }

@@ -1,7 +1,7 @@
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { SafeAreaView, View } from 'react-native';
+import { View } from 'react-native';
 import { Portal } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useRecoilValue } from 'recoil';
 
@@ -9,6 +9,8 @@ import ColorCircle from './ColorCircle';
 import LoadingIndicator from './LoadingIndicator';
 import Bar from './RouteSelection/Bar';
 import QuickSelect from './RouteSelection/QuickSelect';
+import { useRoutePicker } from './routePickerContext';
+import { useSettings } from './settingsContext';
 import { currentRouteRowState, dispatcherState, loadingVehiclesState } from '../state/atoms';
 import { ALL_ROUTES, FAVORITE_STOPS } from '../state/constants';
 import {
@@ -24,7 +26,8 @@ const RouteSelect = () => {
   const favoriteStops = useRecoilValue(favoriteStopDetailsState);
   const activeRoute = useRecoilValue(currentRouteRowState);
   const currentRouteInfo = useRecoilValue(currentRoute);
-  const navigation = useNavigation();
+  const routePicker = useRoutePicker();
+  const settings = useSettings();
   const loading = useRecoilValue(loadingVehiclesState);
   const dataEmpty = useRecoilValue(isDataEmpty);
 
@@ -105,7 +108,7 @@ const RouteSelect = () => {
       <Portal>
         <SafeAreaView>
           <Bar
-            onPress={() => navigation.navigate('SelectRoute')}
+            onPress={routePicker.open}
             title={name}
             left={
               <ColorCircle
@@ -116,7 +119,7 @@ const RouteSelect = () => {
               />
             }
             iconRight="cog"
-            onIconRight={() => navigation.navigate('Settings')}
+            onIconRight={settings.open}
           />
           <View>
             <QuickSelect items={items} style={{ paddingVertical: 4 }} />

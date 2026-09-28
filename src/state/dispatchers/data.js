@@ -2,6 +2,7 @@ import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 
 import { dataHashState, dataState } from '../atoms';
+import { BACKEND_HOST } from '../constants';
 import getFromLocalStorage from '../utilities/localforage/getFromLocalStorage';
 
 /**
@@ -35,7 +36,7 @@ export const fetchData =
  */
 const getPersistentData = async (hash) => {
   try {
-    let url = `${process.env.EXPO_PUBLIC_BACKEND_HOST}/data?hash=${hash}&os=${Platform.OS}`;
+    let url = `${BACKEND_HOST}/data?hash=${hash}&os=${Platform.OS}`;
     if (Constants.expoConfig?.version) {
       url += `&version=${Constants.expoConfig.version}`;
     }
