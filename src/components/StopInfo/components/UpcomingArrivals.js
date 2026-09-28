@@ -1,8 +1,6 @@
-import { differenceInMinutes, format, parse } from 'date-fns';
 import React from 'react';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { Text } from 'react-native-paper';
-import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import { useRecoilValue } from 'recoil';
 
 import {
@@ -31,18 +29,23 @@ const UpcomingArrivals = () => {
 
       if (settings?.showFavoriteArrivalsOnly && !favoriteRouteIDs.has(r.route_id)) return null;
 
-      let { hours, minutes } = arrival.arrival_time;
-      let rollover = false;
-      if (hours >= 24) {
-        hours %= 24;
-        rollover = true;
-      }
+      const hours = Number(arrival.arrival_time?.hours);
+      const minutes = Number(arrival.arrival_time?.minutes);
+      if (!Number.isFinite(hours) || !Number.isFinite(minutes)) return null;
 
-      const d = parse(`${hours}:${minutes}`, 'H:m', Date.now());
-      let diffMins = differenceInMinutes(d, Date.now(), { roundingMethod: 'ceil' });
-
-      if (rollover) diffMins += 1440;
+      // Compare minutes since midnight. Building a Date here was wrong on
+      // Hermes: the clock looked right, but the timestamp was already past,
+      // so every row fell through to "arriving".
+      const now = new Date();
+      const nowMinutes = now.getHours() * 60 + now.getMinutes();
+      let diffMins = hours * 60 + minutes - nowMinutes;
+      if (diffMins < -12 * 60) diffMins += 24 * 60;
       if (diffMins > 180) return null;
+
+      const clockHours = ((hours % 24) + 24) % 24;
+      const clockLabel = `${clockHours % 12 || 12}:${String(minutes).padStart(2, '0')} ${
+        clockHours < 12 ? 'AM' : 'PM'
+      }`;
 
       return (
         <Pressable
@@ -57,8 +60,8 @@ const UpcomingArrivals = () => {
               marginVertical: 4,
             }}>
             <Text style={{ paddingLeft: 4 }}>
-              {r.route_long_name} - {format(d, 'h:mm a')} (
-              {diffMins > 1 ? diffMins + ' minutes' : diffMins === 1 ? '1 minute' : 'arriving'})
+              {r.route_long_name} - {clockLabel} (
+              {diffMins > 1 ? `${diffMins} minutes` : diffMins === 1 ? '1 minute' : 'arriving'})
             </Text>
           </View>
         </Pressable>

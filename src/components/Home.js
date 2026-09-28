@@ -7,7 +7,9 @@ import { useRecoilValue } from 'recoil';
 
 import { dispatcherState } from '../state/atoms';
 import Map from './Map/Map';
+import RoutePickerHost from './RoutePickerHost';
 import RouteSelect from './RouteSelect';
+import SettingsHost from './SettingsHost';
 import StopInfo from './StopInfo/StopInfo';
 import Websocket from './Websocket';
 
@@ -50,13 +52,17 @@ const Home = () => {
   return (
     <>
       <Portal.Host>
-        <Websocket>
-          <View style={styles.page}>
-            <RouteSelect />
-            <Map />
-            <StopInfo />
-          </View>
-        </Websocket>
+        <SettingsHost>
+          <RoutePickerHost>
+            <Websocket>
+              <View style={styles.page}>
+                <RouteSelect />
+                <Map />
+                <StopInfo />
+              </View>
+            </Websocket>
+          </RoutePickerHost>
+        </SettingsHost>
       </Portal.Host>
     </>
   );

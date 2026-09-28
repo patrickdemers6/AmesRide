@@ -135,35 +135,14 @@ export const isCustomRouteSelector = selector({
 export const currentRouteShapeSelector = selector({
   key: 'currentPatternSelector',
   get: ({ get }) => {
-    /**
-     * goal: get the shape of the current route
-     */
-    const vehicles = get(vehicleLocationState);
-    const route = get(currentRoute);
-    const data = get(dataState);
-
-    // no pattern when on favorites or all routes
-    if (route < 0) return null;
-
-    if (vehicles && vehicles.length > 0) {
-      // get the pattern based on the vehicles
-      return data.trips[vehicles[0].trip].shape_id;
-    }
-
-    // if we don't have trips for this route, it is impossible to render a route
-    if (!route.trips) return null;
-
-    // no busses are loaded, get any trip's line
-    return data.trips[route.trips[0]].shape_id;
+    const trip = get(currentTripSelector);
+    return trip?.shape_id ?? null;
   },
 });
 
 export const currentTripSelector = selector({
   key: 'currentTripSelector',
   get: ({ get }) => {
-    /**
-     * goal: get the current trip
-     */
     const vehicles = get(vehicleLocationState);
     const route = get(currentRoute);
     const data = get(dataState);
@@ -171,18 +150,48 @@ export const currentTripSelector = selector({
     // no pattern when on favorites or all routes
     if (route < 0) return null;
 
-    if (vehicles && vehicles.length > 0) {
-      // get the pattern based on the vehicles
-      return data.trips[vehicles[0].trip];
-    }
-
-    // if we don't have trips for this route, it is impossible to render a route
-    if (!route.trips) return null;
-
-    // no busses are loaded, get any trip's line
-    return data.trips[route.trips[0]];
+    return representativeTrip(vehicles, route, data);
   },
 });
+
+/**
+ * Stops and the route line follow one trip. A short-turn bus is often first
+ * in the live feed, and using that trip hides the rest of the route. Prefer
+ * the active bus whose trip visits the most stops. With no buses, use the
+ * pattern most of this route's trips share.
+ */
+const representativeTrip = (vehicles, route, data) => {
+  if (!data?.trips) return null;
+
+  if (vehicles && vehicles.length > 0) {
+    let fullest = null;
+    vehicles.forEach((vehicle) => {
+      const trip = data.trips[vehicle.trip];
+      if (!trip?.stops?.length) return;
+      if (!fullest || trip.stops.length > fullest.stops.length) fullest = trip;
+    });
+    if (fullest) return fullest;
+  }
+
+  if (!route?.trips?.length) return null;
+
+  const patterns = new Map();
+  route.trips.forEach((tripId) => {
+    const trip = data.trips[tripId];
+    if (!trip?.stops?.length) return;
+    const key = trip.stops.join('\0');
+    const existing = patterns.get(key);
+    if (existing) existing.count += 1;
+    else patterns.set(key, { trip, count: 1 });
+  });
+
+  let best = null;
+  patterns.forEach((pattern) => {
+    if (!best || pattern.count > best.count) best = pattern;
+  });
+
+  return best?.trip ?? data.trips[route.trips[0]] ?? null;
+};
 
 const sortRoutes = (a, b) => {
   const regex = /^[0-9]+/;

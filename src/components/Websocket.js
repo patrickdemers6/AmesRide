@@ -4,6 +4,7 @@ import { useRecoilValue } from 'recoil';
 import { io } from 'socket.io-client';
 
 import { currentStopState, dispatcherState } from '../state/atoms';
+import { BACKEND_HOST } from '../state/constants';
 import { currentRoute } from '../state/selectors';
 
 const Websocket = ({ children }) => {
@@ -51,7 +52,7 @@ const Websocket = ({ children }) => {
           return existing;
         }
 
-        const socket = io(process.env.EXPO_PUBLIC_BACKEND_HOST);
+        const socket = io(BACKEND_HOST);
         socket.on('connect', () => {
           if (route?.route_id >= 0) subscribeRoute(socket);
           if (stop?.stop_id) subscribeStop(socket);

@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native';
 import { ScrollView, useWindowDimensions } from 'react-native';
 import { List } from 'react-native-paper';
 import { useRecoilValue } from 'recoil';
@@ -7,17 +6,18 @@ import { dispatcherState } from '../../state/atoms';
 import { routesSortedState } from '../../state/selectors';
 import theme from '../../styles/theme';
 import ColorCircle from '../ColorCircle';
+import { useRoutePicker } from '../routePickerContext';
 
 const RouteList = ({ editing, checked, onEditPress }) => {
   const routes = useRecoilValue(routesSortedState);
   const dispatcher = useRecoilValue(dispatcherState);
-  const navigation = useNavigation();
+  const routePicker = useRoutePicker();
   const { width } = useWindowDimensions();
 
   const handleSelect = (index) => {
     if (index === 0) dispatcher?.updateCurrentRoute(null);
     else dispatcher?.updateCurrentRoute(index);
-    navigation.goBack();
+    routePicker.close();
   };
 
   const onPress = editing ? onEditPress : handleSelect;
